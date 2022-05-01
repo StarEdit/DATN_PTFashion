@@ -1,0 +1,44 @@
+.home-services {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.home-services .home-services-icon {
+  font-size: 10rem;
+  color: #ff6875;
+}
+
+.home-services .home-services-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.home-services .home-services-content {
+  padding: 0 6rem;
+}
+
+.home-category {
+  margin: 2rem 2rem;
+}
+
+.home-category-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.home-category .category-card .card-img {
+  overflow: hidden;
+}
+
+.home-category .category-card img {
+  -webkit-transition: linear 0.5s;
+  transition: linear 0.5s;
+}
+
+.home-category .category-card .card-img:hover img {
+  -webkit-transform: scale(1.5);
+          transform: scale(1.5);
+}
+/*# sourceMappingURL=style.css.map */

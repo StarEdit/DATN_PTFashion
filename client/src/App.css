@@ -1,0 +1,12 @@
+@import '~antd/dist/antd.css';
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.App {
+  text-align: center;
+  font-size: 10px;
+  box-sizing: border-box;
+}

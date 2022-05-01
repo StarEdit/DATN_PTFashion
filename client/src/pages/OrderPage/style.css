@@ -1,0 +1,15 @@
+.order {
+  min-height: 50vh;
+  margin: 2rem;
+}
+
+.order-title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.order-step {
+  width: 50%;
+  margin: 0 auto;
+}
+/*# sourceMappingURL=style.css.map */

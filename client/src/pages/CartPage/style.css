@@ -1,0 +1,18 @@
+.cart {
+  margin: 2rem 2rem;
+  min-height: 100vh;
+}
+
+.cart .cart-qty-action {
+  font-size: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+/*# sourceMappingURL=style.css.map */

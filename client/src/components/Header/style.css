@@ -1,0 +1,132 @@
+.header {
+  margin: 0 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header-logo {
+  width: 25%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header-logo img {
+  cursor: pointer;
+}
+
+.header-logo .header-title {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.header-menu {
+  width: 40%;
+}
+
+.header-menu .active {
+  color: #1890ff;
+}
+
+.header-user {
+  width: 30%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header-user-search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.header-user-search span {
+  font-size: 2rem;
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
+
+.header-user-action {
+  font-size: 2rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.header-user-action .active {
+  visibility: visible !important;
+}
+
+.header-user-action .action-list {
+  visibility: hidden;
+  position: absolute;
+  z-index: 1;
+  list-style: none;
+  min-width: 18rem;
+  left: -2rem;
+  top: 4rem;
+  text-align: left;
+  padding-left: 2rem;
+  font-size: 1.6rem;
+  background-color: white;
+}
+
+.header-user-action .action-list::after {
+  content: "";
+  position: absolute;
+  width: 16rem;
+  height: 2.6rem;
+  top: -1.8rem;
+  left: 0;
+}
+
+.header-user-action .action-list::before {
+  content: "";
+  position: absolute;
+  top: -1.3rem;
+  right: 8rem;
+  border-left: 1.4rem solid transparent;
+  border-right: 1.4rem solid transparent;
+  border-bottom: 1.4rem solid white;
+}
+
+.header-user-cart {
+  font-size: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.header-user-cart-count {
+  position: absolute;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 1px 5px;
+  font-size: 0.8rem;
+  top: 0;
+  right: -6px;
+}
+/*# sourceMappingURL=style.css.map */

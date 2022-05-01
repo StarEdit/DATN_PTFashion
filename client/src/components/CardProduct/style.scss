@@ -1,0 +1,115 @@
+.product-name {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  padding-bottom: 2rem;
+}
+
+.product-desc {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .product-price {
+    font-size: 1.6rem;
+
+    .old-price {
+      text-decoration: line-through;
+      font-size: 1.2rem;
+    }
+
+    .new-price {
+      color: red;
+    }
+  }
+}
+
+.product-information {
+  padding: 0 2rem 2rem 2rem;
+
+  .product-name {
+    padding-bottom: 0;
+  }
+  .product-price {
+    display: flex;
+    align-items: center;
+
+    .title-price {
+      font-size: 2rem;
+      margin-right: 2rem;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      font-size: 1.4rem;
+    }
+
+    .new-price {
+      color: red;
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+  }
+  .product-category {
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  .product-color {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+
+    .product-color-list {
+      display: flex;
+      align-items: center;
+
+      button {
+        margin-left: 1rem;
+      }
+
+      .active {
+        border: 1px solid red;
+      }
+    }
+  }
+
+  .product-size {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    .product-size-title {
+      margin-right: 2rem;
+    }
+  }
+
+  .product-btn-buy {
+    display: flex;
+    justify-content: space-between;
+
+    .product-quantity {
+      font-size: 2.4rem;
+      width: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      span {
+        color: #1990ff;
+        font-size: 4rem;
+      }
+    }
+
+    button {
+      width: 26rem;
+      height: 5rem;
+
+      span {
+        font-size: 2rem;
+      }
+    }
+  }
+}

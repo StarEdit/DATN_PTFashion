@@ -1,0 +1,35 @@
+.product {
+  margin: 2rem 2rem;
+
+  &-category {
+    font-size: 2rem;
+    margin-top: 2rem;
+    text-align: left;
+
+    .category-list {
+      background-color: #f6f7f8;
+      padding: 0 2rem;
+
+      .category-item {
+        padding: 1rem 4rem;
+      }
+    }
+  }
+
+  .sort-action {
+    font-size: 1.6rem;
+    background-color: #f6f7f8;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    margin-top: 2rem;
+
+    .sort-title {
+      margin: 0 1rem;
+    }
+  }
+
+  .list-product {
+    margin-top: 2rem;
+  }
+}

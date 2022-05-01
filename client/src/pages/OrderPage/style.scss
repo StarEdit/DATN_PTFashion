@@ -1,0 +1,14 @@
+.order {
+  min-height: 50vh;
+  margin: 2rem;
+
+  &-title {
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  &-step {
+    width: 50%;
+    margin: 0 auto;
+  }
+}

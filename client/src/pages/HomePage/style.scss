@@ -1,0 +1,43 @@
+.home-services {
+  margin-top: 2rem;
+  font-size: 2rem;
+
+  .home-services-icon {
+    font-size: 10rem;
+    color: #ff6875;
+  }
+
+  .home-services-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+  }
+
+  .home-services-content {
+    padding: 0 6rem;
+  }
+}
+
+.home-category {
+  margin: 2rem 2rem;
+
+  &-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+  }
+
+  .category-card {
+    .card-img {
+      overflow: hidden;
+    }
+    img {
+      transition: linear 0.5s;
+    }
+    .card-img {
+      &:hover img {
+        transform: scale(1.5);
+      }
+    }
+  }
+}

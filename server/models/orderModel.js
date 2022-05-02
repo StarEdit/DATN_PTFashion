@@ -24,15 +24,10 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    totalPrice: {
+    status: {
       type: Number,
       required: true,
-      default: 0.0,
-    },
-    status: {
-      type: String,
-      required: true,
-      default: "Chờ xét duyệt",
+      default: 0,
     },
     paymentMethod: {
       type: String,

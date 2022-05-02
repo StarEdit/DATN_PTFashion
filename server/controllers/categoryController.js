@@ -2,9 +2,9 @@ import asyncHandler from "express-async-handler";
 import Category from "./../models/categoryModel.js";
 import Product from "./../models/productModel.js";
 
-// @desc  Create a category
-// @route   POST /api/categories
-// @access  Private/Admin
+// @desc    Tạo danh mục
+// @route   POST /api/category
+// @access  Protect/Admin
 const createCategory = asyncHandler(async (req, res) => {
   const category = new Category({
     key: req.body.key,
@@ -18,35 +18,26 @@ const createCategory = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc   Get all category
+// @desc   Xem tất cả danh mục
 // @route  GET /api/categories
-// @access public
+// @access Public
 const getAllCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find().sort({ key: "asc" });
 
   res.json({ categories });
 });
 
-// @desc   Get all category by params
-// @route  GET /api/categories
-// @access Private/Admin
+// @desc   Xem tất cả danh mục
+// @route  GET /api/category
+// @access Protect/Admin
 const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find();
+  const categories = await Category.find().sort({ key: "asc" });
   res.json({ categories });
 });
 
-// @desc   search  category
-// @route  GET /api/categories/search
-// @access Private/Admin
-const searchCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find({ name: req.query.name });
-
-  res.json({ categories });
-});
-
-// @desc   get category by Id
-// @route  GET /api/categories/:id
-// @access private/admin
+// @desc   xem danh mục theo id
+// @route  GET /api/category/:id
+// @access Protect/admin
 const getCategoryById = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
 
@@ -58,9 +49,9 @@ const getCategoryById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update a category
-// @route   PUT /api/categories/:id
-// @access  Private/Admin
+// @desc    Cập nhật danh mục
+// @route   PUT /api/category/:id
+// @access  Protect/Admin
 const updateCategory = asyncHandler(async (req, res) => {
   const { category_name } = req.body;
 
@@ -81,12 +72,12 @@ const updateCategory = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    sort Delete a category
-// @route   DELETE /api/categories/:id
-// @access  Private/Admin
+// @desc    Xóa danh mục
+// @route   DELETE /api/category/:id
+// @access  Protect/Admin
 const deleteCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
-  const product = await Product.find({ categoryId: req.params.id });
+  const product = await Product.find({ categoryId: category.key });
   if (product.length !== 0) {
     res.status(406);
     res.json({
@@ -110,5 +101,4 @@ export {
   updateCategory,
   deleteCategory,
   getAllCategories,
-  searchCategories,
 };

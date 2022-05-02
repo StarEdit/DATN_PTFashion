@@ -5,28 +5,36 @@ import {
   logout,
   getUserInfo,
   getUserProfile,
-  updateUserProfile,
+  updateUserInfo,
   deleteUser,
   getUserById,
   forgotPassword,
   updatePassword,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-router.route("/users").post(registerUser);
+router.route("/user").post(registerUser);
 
-router.route("/users/forgot-password").post(forgotPassword);
 router.post("/user/login", authUser);
+
+router.route("/user/forgot-password").post(forgotPassword);
+
 router.route("/user/change-password").put(protect, updatePassword);
-router.get("/user/info", protect, getUserInfo);
-router.get("/user/logout", logout);
 
 router
-  .route("/user/profile")
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+  .route("/user/info")
+  .get(protect, getUserInfo)
+  .put(protect, updateUserInfo);
 
-router.route("/users/:id").get(getUserById).delete(protect, admin, deleteUser);
+router.route("/user/logout").post(logout);
+
+router.route("/user/profile").get(protect, admin, getUserProfile);
+
+router
+  .route("/user/:id")
+  .get(protect, admin, getUserById)
+  .delete(protect, admin, deleteUser);
 
 export default router;

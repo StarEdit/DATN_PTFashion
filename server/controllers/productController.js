@@ -1,9 +1,9 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
 
-// @desc    Create a product
-// @route   POST /api/products
-// @access  Private/Admin
+// @desc    Tạo sản phẩm
+// @route   POST /api/product
+// @access  Protect/Admin
 const createProduct = asyncHandler(async (req, res) => {
   const files = req.files;
   const {
@@ -43,16 +43,16 @@ const createProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get all product
-// @route  GET /api/products
-// @access Private/Admin
+// @desc   Xem tất cả sản phẩm
+// @route  GET /api/product
+// @access Protect/Admin
 const getAllProducts = asyncHandler(async (req, res) => {
   const products = await Product.find().sort({ name: "asc" });
   res.json({ products });
 });
 
-// @desc    Get top rated products
-// @route   GET /api/products/params
+// @desc    Xem sản phẩm theo danh mục
+// @route   GET /api/product/:category
 // @access  Public
 const getProductsByCategory = asyncHandler(async (req, res) => {
   const filter = {};
@@ -71,9 +71,9 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete a product
-// @route   DELETE /api/products/:id
-// @access  Private/Admin
+// @desc    Xóa sản phẩm
+// @route   DELETE /api/product/:id
+// @access  Protect/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
@@ -85,9 +85,9 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update a product
-// @route   PUT /api/products/:id
-// @access  Private/Admin
+// @desc    Cập nhật sản phẩm
+// @route   PUT /api/product/:id
+// @access  Protect/Admin
 const updateProduct = asyncHandler(async (req, res) => {
   const {
     name,
@@ -117,11 +117,11 @@ const updateProduct = asyncHandler(async (req, res) => {
 
     await product.save();
     res.json({
-      message: "Update Product Successfully",
+      message: "Cập nhật thành công",
     });
   } else {
     res.status(404);
-    throw new Error("Product not found");
+    throw new Error("Không tìm thấy sản phẩm");
   }
 });
 

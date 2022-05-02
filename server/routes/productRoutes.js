@@ -8,11 +8,12 @@ import {
 } from "../controllers/productController.js";
 import { uploadMultiFile } from "../utils/uploadFiles.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 router
   .route("/product")
-  .get(getAllProducts)
+  .get(protect, admin, getAllProducts)
   .post(protect, admin, uploadMultiFile, createProduct);
 
 router

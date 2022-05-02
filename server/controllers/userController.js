@@ -4,8 +4,8 @@ import generateAuthToken from "../utils/generateToken.js";
 import sendEmail from "../utils/sendEmail.js";
 import generator from "generate-password";
 
-// @desc   Auth user & get token
-// @route  POST /api/users/login
+// @desc   AUTH và lấy token
+// @route  POST /api/user/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -26,7 +26,7 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   logout
+// @desc   Đăng xuất
 // @route  POST /api/logout
 // @access Public
 const logout = asyncHandler(async (req, res) => {
@@ -37,8 +37,8 @@ const logout = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc   Register a new user
-// @route  POST /api/users
+// @desc   Đăng ký
+// @route  POST /api/user
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { email, isAdmin, password } = req.body;
@@ -77,9 +77,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get user info
-// @route  GET /api/userInfo
-// @access public
+// @desc   Xem thông tin người dùng
+// @route  GET /api/user/info
+// @access Protect
 const getUserInfo = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
   if (user) {
@@ -98,37 +98,26 @@ const getUserInfo = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get user profile
-// @route  GET /api/users/profile
-// @access Private
+// @desc   Xem thông tin người dùng
+// @route  GET /api/user/profile
+// @access Protect/Admin
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.find().sort({ name: "asc" });
 
-  if (user) {
-    res.json({
-      _id: user._id,
-      full_name: user.full_name,
-      email: user.email,
-      password: user.password,
-      address: user.address,
-      phone: user.phone,
-    });
-  } else {
-    res.status(404);
-    throw new Error("Không tìm thấy người dùng");
-  }
+  res.json({ user });
 });
 
-// @desc   Update user profile
-// @route  PUT /api/user/profile
-// @access Private
-const updateUserProfile = asyncHandler(async (req, res) => {
+// @desc   Cập nhật thông tin người dùng
+// @route  PUT /api/user/info
+// @access Protect
+const updateUserInfo = asyncHandler(async (req, res) => {
+  const { full_name, email, phone, address } = req.body;
   const user = await User.findById(req.user._id);
   if (user) {
-    user.full_name = req.body.full_name || user.full_name;
-    user.email = req.body.email || user.email;
-    user.phone = req.body.phone || user.phone;
-    user.address = req.body.address || user.address;
+    user.full_name = full_name || user.full_name;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+    user.address = address || user.address;
     user.password = user.password;
     user.isWork = user.isWork;
     user.isAdmin = user.isAdmin;
@@ -144,9 +133,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Delete user
-// @route  DELETE /api/users/:id
-// @access Private/Admin
+// @desc   Xóa người dùng
+// @route  DELETE /api/user/:id
+// @access Protect/Admin
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
@@ -163,9 +152,9 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get user by ID
-// @route  GET /api/users/:id
-// @access Private/Admin
+// @desc   xem người dùng bằng ID
+// @route  GET /api/user/:id
+// @access Protect/Admin
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
@@ -176,7 +165,9 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// forgot password
+// @desc   Quên mật khẩu
+// @route  POST /api/user/forgot-password
+// @access Protect
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email: email });
@@ -192,7 +183,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     await sendEmail({
       email: email,
       subject: `Lấy lại mật khẩu`,
-      html: `Mật khẩu mới của bạn là ${password}. <a href="http://localhost:3000">Đăng nhập lại</a>`,
+      html: `Mật khẩu mới của bạn là ${password}. <a href="${loginURl}>Đăng nhập lại</a>`,
     });
 
     res.status(200).json({
@@ -205,21 +196,24 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
-//update password
+// @desc   Cập nhật mật khẩu
+// @route  POST /api/user/change-password
+// @access Protect
 const updatePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword, confirmPassword } = req.body;
   const user = await User.findById(req.user._id);
-  const isPasswordMatched = await user.matchPassword(req.body.oldPassword);
+  const isPasswordMatched = await user.matchPassword(oldPassword);
 
   if (!isPasswordMatched) {
     res.status(400);
     throw new Error("Mật khẩu cũ không chính xác");
   }
-  if (req.body.newPassword !== req.body.confirmPassword) {
+  if (newPassword !== confirmPassword) {
     res.status(400);
     throw new Error("Mật khẩu không đúng! Vui lòng nhập lại");
   }
 
-  user.password = req.body.newPassword;
+  user.password = newPassword;
   await user.save();
   res.status(200).json({
     success: true,
@@ -233,7 +227,7 @@ export {
   registerUser,
   getUserInfo,
   getUserProfile,
-  updateUserProfile,
+  updateUserInfo,
   deleteUser,
   getUserById,
   forgotPassword,

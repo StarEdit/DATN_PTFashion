@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
 import Cart from "../models/cartModel.js";
 
-// @desc    get all cart by userId
-// @route   GET /api/carts/
-// @access  private
-const getCarts = asyncHandler(async (req, res, next) => {
+// @desc    Xem giỏ hàng theo id người dùng
+// @route   GET /api/cart
+// @access  Protect
+const getCarts = asyncHandler(async (req, res) => {
   const cart = await Cart.findOne({ userId: req.user._id });
 
   if (!cart) {
@@ -18,19 +18,20 @@ const getCarts = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    post new cart
-// @route   POST /api/carts/
-// @access  private
+// @desc    Tạo giỏ hàng
+// @route   POST /api/cart
+// @access  Protect
 const createCart = asyncHandler(async (req, res) => {
-  const { name, quantity, price, discount, image, productId } = req.body;
+  const { productId, productName, image, quantity, price, percentSale } =
+    req.body;
   const newCart = {
-    name,
-    quantity,
-    price,
-    discount,
-    image,
     userId: req.user._id,
     productId,
+    productName,
+    image,
+    quantity,
+    price,
+    percentSale,
   };
   const cart = await Cart.findOne({ userId: req.user._id });
 
@@ -57,19 +58,19 @@ const createCart = asyncHandler(async (req, res) => {
       userId: req.user._id,
       products: [
         {
-          name,
+          productId,
+          productName,
+          image,
           quantity,
           price,
-          discount,
-          image,
-          productId,
+          percentSale,
         },
       ],
     });
 
     if (newCart) {
       res.status(201).json({
-        mesage: "Thêm sản phẩm vào giỏ hàng thành công",
+        message: "Thêm sản phẩm vào giỏ hàng thành công",
       });
     } else {
       res.status(404);
@@ -78,9 +79,65 @@ const createCart = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    delete cart
-// @route   DELETE/api/carts/:id
-// @access  private
+// @desc    Tăng số lượng sản phẩm
+// @route   PATCH /api/cart/plus/:id
+// @access  Protect
+const plusProduct = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  let carts = await Cart.findOne({ userId: userId });
+
+  if (carts) {
+    let itemIndex = carts.products.findIndex(
+      (pro) => pro._id.toString() === req.params.id.toString()
+    );
+    if (itemIndex === -1)
+      return res
+        .status(400)
+        .json({ message: "Sản phẩm không có trong giỏ hàng" });
+
+    carts.products[itemIndex].quantity += 1;
+
+    carts = await carts.save();
+
+    return res.status(200).json({ message: "Thêm thành công" });
+  } else {
+    res.status(404);
+    throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
+  }
+});
+
+// @desc    Giảm số lượng sản phẩm
+// @route   PATCH /api/cart/minus/:id
+// @access  Protect
+const minusProduct = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  let carts = await Cart.findOne({ userId: userId });
+
+  if (carts) {
+    let itemIndex = carts.products.findIndex(
+      (pro) => pro._id.toString() === req.params.id.toString()
+    );
+    if (itemIndex === -1)
+      return res
+        .status(400)
+        .json({ message: "Sản phẩm không có trong giỏ hàng" });
+
+    carts.products[itemIndex].quantity -= 1;
+
+    carts = await carts.save();
+
+    return res.status(200).json({ message: "Giảm thành công" });
+  } else {
+    res.status(404);
+    throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
+  }
+});
+
+// @desc    Xóa giỏ hàng
+// @route   DELETE /api/cart/delete/:id
+// @access  Protect
 const deleteCart = asyncHandler(async (req, res) => {
   let carts = await Cart.findOne({ userId: req.user._id });
   if (carts) {
@@ -100,4 +157,35 @@ const deleteCart = asyncHandler(async (req, res) => {
   }
 });
 
-export { getCarts, createCart, deleteCart };
+// @desc    Tổng tiền
+// @route   GET /api/cart/total
+// @access  Protect
+const getTotal = asyncHandler(async (req, res) => {
+  let carts = await Cart.findOne({ userId: req.user._id });
+
+  if (!carts) {
+    res.status(404);
+    throw new Error("Không tìm thấy giỏ hàng");
+  }
+
+  let total = carts.products.reduce((prev, product) => {
+    return (prev +=
+      (product.price - product.price * (product.percentSale / 100)) *
+      product.quantity);
+  }, 0);
+
+  return res.status(200).json({
+    success: true,
+    message: "Thành công",
+    total: total,
+  });
+});
+
+export {
+  getCarts,
+  createCart,
+  plusProduct,
+  minusProduct,
+  deleteCart,
+  getTotal,
+};

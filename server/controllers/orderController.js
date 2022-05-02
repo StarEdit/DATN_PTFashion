@@ -4,9 +4,9 @@ import User from "../models/userModel.js";
 import Product from "./../models/productModel.js";
 import Cart from "./../models/cartModel.js";
 
-// @desc   Create new order
-// @route  POST /api/orders
-// @access Private
+// @desc   Tạo đơn hàng
+// @route  POST /api/order
+// @access Protect
 const createOrder = asyncHandler(async (req, res) => {
   const { userName, address, phoneNumber, paymentMethod } = req.body;
   const user = await User.findById(req.user._id);
@@ -31,9 +31,9 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get order by ID
-// @route  GET /api/orders/:id
-// @access Private
+// @desc   Xem đơn hàng theo id
+// @route  GET /api/order/:id
+// @access Protect
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -45,27 +45,28 @@ const getOrderById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   Get all orders
-// @route  GET /api/orders
-// @access Private/Admin
+// @desc   Xem tất cả đơn hàng
+// @route  GET /api/order
+// @access Protect/Admin
 const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find().sort({ userName: "asc" });
   res.json({ orders });
 });
 
-// @desc   delete order
-// @route  delete /api/orders/:id
-// @access Private
+// @desc   Xóa đơn hàng
+// @route  delete /api/order/:id
+// @access Protect
 const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
   if (!order) {
-    throw new Error("Đơn hàng không tồn tại", 404);
+    res.status(404);
+    throw new Error("Đơn hàng không tồn tại");
   } else {
-    if (order.status !== 0) {
+    if (order.status === 1) {
+      res.status(401);
       throw new Error(
-        "Đơn hàng của bạn đang được giao! Không thể hủy đơn hàng",
-        401
+        "Đơn hàng của bạn đang được giao! Không thể hủy đơn hàng"
       );
     } else {
       await order.remove();
@@ -77,9 +78,9 @@ const deleteOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc   update order
-// @route  patch /api/orders/:id
-// @access Private
+// @desc   Cập nhật đơn hàng
+// @route  patch /api/order/:id
+// @access Protect/Admin
 const updateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (order) {

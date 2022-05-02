@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import categoryRouter from "./routes/categoryRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 import cors from "cors";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -25,6 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", userRouter);
 app.use("/api", categoryRouter);
 app.use("/api", productRouter);
+app.use("/api", cartRouter);
+app.use("/api", orderRouter);
 
 app.use("/uploads", express.static("uploads"));
 

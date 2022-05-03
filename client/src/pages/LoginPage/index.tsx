@@ -1,15 +1,40 @@
-import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import React, { useEffect } from "react";
+import { Form, Input, Button } from "antd";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 
 import bannerLoginImg from "../../assets/images/banner-login.png";
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userAction } from "redux/store";
+import { bindActionCreators } from "redux";
+import { State } from "redux/reducers";
 
-const loginPage = () => {
+const LoginPage = () => {
   const formItemLayout = {
     labelCol: { span: 8, offset: 5 },
     wrapperCol: { span: 14, offset: 5 },
+  };
+
+  const navigate = useNavigate();
+
+  const [form] = Form.useForm();
+
+  const dispatch = useDispatch();
+
+  const { login } = bindActionCreators(userAction, dispatch);
+
+  const userInfo = useSelector((state: State) => state.userReducer.userInfo);
+
+  useEffect(() => {
+    if (userInfo !== undefined && userInfo._id) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
+
+  const handleLogin = () => {
+    const { email, password } = form.getFieldsValue();
+    login(email, password);
   };
 
   return (
@@ -27,16 +52,14 @@ const loginPage = () => {
           <div>ĐĂNG NHẬP</div>
         </div>
         <div className="login-right-form">
-          <Form {...formItemLayout} style={{ textAlign: "left" }}>
+          <Form {...formItemLayout} style={{ textAlign: "left" }} form={form}>
             <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your Username!" },
-              ]}
+              name="email"
+              rules={[{ required: true, message: "Please input your Email!" }]}
             >
               <Input
-                prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                prefix={<MailOutlined className="site-form-item-icon" />}
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item
@@ -52,15 +75,7 @@ const loginPage = () => {
               />
             </Form.Item>
             <Form.Item>
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-
-              <Link
-                className="login-form-forgot"
-                to="/"
-                style={{ paddingLeft: "12.2rem" }}
-              >
+              <Link className="login-form-forgot" to="/">
                 Forgot password
               </Link>
             </Form.Item>
@@ -70,6 +85,7 @@ const loginPage = () => {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                onClick={handleLogin}
               >
                 Đăng Nhập
               </Button>
@@ -85,4 +101,4 @@ const loginPage = () => {
   );
 };
 
-export default loginPage;
+export default LoginPage;

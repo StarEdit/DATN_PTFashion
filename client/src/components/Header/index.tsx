@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Menu } from "antd";
 import {
   UserOutlined,
@@ -8,7 +8,11 @@ import {
 import logo from "../../assets/images/logo.jpg";
 
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { userAction } from "redux/store";
+import { State } from "redux/reducers";
 
 const { SubMenu } = Menu;
 
@@ -17,6 +21,24 @@ const Header = () => {
 
   const handleActive = () => {
     setActive(!active);
+  };
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const { logout } = bindActionCreators(userAction, dispatch);
+
+  const userInfo = useSelector((state: State) => state.userReducer.userInfo);
+
+  useEffect(() => {
+    if (userInfo.token === "") {
+      navigate("/login");
+    }
+  }, [userInfo, navigate]);
+
+  const handleLogout = () => {
+    logout();
   };
   return (
     <div className="header">
@@ -56,9 +78,11 @@ const Header = () => {
             <UserOutlined /> Tài khoản
           </div>
           <ul className={active ? "action-list active" : "action-list"}>
-            <li className="action-list-item">Thông tin</li>
-            <li className="action-list-item">Thông tin</li>
-            <li className="action-list-item">Thông tin</li>
+            <li className="action-list-item">Thông tin cá nhân</li>
+            <li className="action-list-item">Cập nhật thông tin</li>
+            <li className="action-list-item" onClick={handleLogout}>
+              Đăng xuất
+            </li>
           </ul>
         </div>
         <div className="header-user-cart">

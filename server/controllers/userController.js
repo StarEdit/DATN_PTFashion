@@ -65,9 +65,6 @@ const registerUser = asyncHandler(async (req, res) => {
     });
     res.status(201).json({
       _id: req.body._id,
-      full_name: req.body.full_name,
-      phone: req.body.phone,
-      address: req.body.address,
       email: req.body.email,
       isAdmin: req.body.isAdmin,
     });

@@ -22,8 +22,16 @@ const getCarts = asyncHandler(async (req, res) => {
 // @route   POST /api/cart
 // @access  Protect
 const createCart = asyncHandler(async (req, res) => {
-  const { productId, productName, image, quantity, price, percentSale } =
-    req.body;
+  const {
+    productId,
+    productName,
+    image,
+    quantity,
+    price,
+    percentSale,
+    color,
+    size,
+  } = req.body;
   const newCart = {
     userId: req.user._id,
     productId,
@@ -32,6 +40,8 @@ const createCart = asyncHandler(async (req, res) => {
     quantity,
     price,
     percentSale,
+    color,
+    size,
   };
   const cart = await Cart.findOne({ userId: req.user._id });
 
@@ -64,6 +74,8 @@ const createCart = asyncHandler(async (req, res) => {
           quantity,
           price,
           percentSale,
+          color,
+          size,
         },
       ],
     });

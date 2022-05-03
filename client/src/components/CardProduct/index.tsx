@@ -7,12 +7,20 @@ import {
 } from "@ant-design/icons";
 
 import "./style.css";
+import { Product } from "types/product.types";
+import { formatMoney } from "utils/converMoney";
 
-const CardProduct = () => {
+interface Props {
+  item: Product;
+}
+
+const CardProduct = (props: Props) => {
   const { Option } = Select;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [qty, setQty] = useState(1);
+  const [color, setColor] = useState<string>();
+  const [size, setSize] = useState<string>();
 
   const handleIncrease = () => {
     setQty((prev) => prev + 1);
@@ -36,11 +44,12 @@ const CardProduct = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  console.log(color, size);
+
   return (
     <>
       <Card
-        hoverable
-        style={{ width: 240 }}
         cover={
           <img
             alt="example"
@@ -49,11 +58,16 @@ const CardProduct = () => {
         }
         bodyStyle={{ padding: "0 1rem" }}
       >
-        <div className="product-name">Tên</div>
+        <div className="product-name">{props.item.name}</div>
         <div className="product-desc">
           <div className="product-price">
-            <div className="old-price">999.000 VND</div>
-            <div className="new-price">699.000 VND</div>
+            <div className="old-price">{formatMoney(props.item.price)}</div>
+            <div className="new-price">
+              {formatMoney(
+                props.item.price -
+                  (props.item.price * props.item.percentSale) / 100
+              )}
+            </div>
           </div>
           <Button onClick={showModal}>Xem chi tiết</Button>
         </div>
@@ -83,28 +97,50 @@ const CardProduct = () => {
           </Image.PreviewGroup>
         </div>
         <div className="product-information">
-          <div className="product-name">Tên</div>
+          <div className="product-name">{props.item.name}</div>
           <div className="product-price">
             <div className="title-price">Giá bán:</div>
-            <div className="new-price">699.000 VND</div>
-            <div className="old-price">999.000 VND</div>
+            <div className="new-price">
+              {formatMoney(
+                props.item.price -
+                  (props.item.price * props.item.percentSale) / 100
+              )}
+            </div>
+            <div className="old-price">{formatMoney(props.item.price)}</div>
           </div>
           <hr style={{ margin: "2rem 0" }} />
-          <div className="product-category">Loại sản phẩm: Giày Sneaker</div>
           <div className="product-color">
             <div className="product-color-title">Màu sắc:</div>
             <div className="product-color-list">
-              <Button className="active">Xanh</Button>
-              <Button>Đỏ</Button>
-              <Button>Tím</Button>
+              <Select
+                placement="topRight"
+                placeholder="Chọn màu"
+                onChange={(value) => {
+                  setColor(value);
+                }}
+              >
+                {props.item.colors.map((item, index) => (
+                  <Option key={index} value={item}>
+                    {item}
+                  </Option>
+                ))}
+              </Select>
             </div>
           </div>
           <div className="product-size">
             <div className="product-size-title">Kích cỡ:</div>
-            <Select placement="topRight" placeholder="Chọn kích cỡ">
-              <Option value="1">45</Option>
-              <Option value="2">46</Option>
-              <Option value="3">47</Option>
+            <Select
+              placement="topRight"
+              placeholder="Chọn kích cỡ"
+              onChange={(value) => {
+                setSize(value);
+              }}
+            >
+              {props.item.sizes.map((item, index) => (
+                <Option key={index} value={item}>
+                  {item}
+                </Option>
+              ))}
             </Select>
           </div>
           <hr style={{ margin: "2rem 0" }} />

@@ -14,3 +14,4 @@ export default store;
 
 export * as userAction from "../action/userAction";
 export * as registerAction from "../action/registerAction";
+export * as SearchAction from "../action/searchAction";

@@ -62,17 +62,8 @@
     font-size: 2rem;
     margin-bottom: 1rem;
 
-    .product-color-list {
-      display: flex;
-      align-items: center;
-
-      button {
-        margin-left: 1rem;
-      }
-
-      .active {
-        border: 1px solid red;
-      }
+    .product-color-title {
+      margin-right: 2rem;
     }
   }
 

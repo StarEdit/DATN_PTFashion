@@ -11,13 +11,12 @@ import "./style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { userAction } from "redux/store";
+import { SearchAction, userAction } from "redux/store";
 import { State } from "redux/reducers";
-
-const { SubMenu } = Menu;
 
 const Header = () => {
   const [active, setActive] = useState(false);
+  const [wordEntered, setWordEntered] = useState<any>();
 
   const handleActive = () => {
     setActive(!active);
@@ -28,11 +27,12 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const { logout } = bindActionCreators(userAction, dispatch);
+  const { search } = bindActionCreators(SearchAction, dispatch);
 
   const userInfo = useSelector((state: State) => state.userReducer.userInfo);
 
   useEffect(() => {
-    if (userInfo.token === "") {
+    if (userInfo?.token === "") {
       navigate("/login");
     }
   }, [userInfo, navigate]);
@@ -40,10 +40,22 @@ const Header = () => {
   const handleLogout = () => {
     logout();
   };
+
+  const searchProduct = async () => {
+    if (wordEntered !== "") {
+      search(wordEntered);
+      navigate(`/search?name=${wordEntered}`);
+      setWordEntered("");
+    }
+    console.log(wordEntered);
+  };
+
   return (
     <div className="header">
       <div className="header-logo">
-        <img src={logo} alt="logo" width={78} />
+        <Link to="/">
+          <img src={logo} alt="logo" width={78} />
+        </Link>
         <div className="header-title">PTFashion</div>
       </div>
       <div className="header-menu">
@@ -53,13 +65,15 @@ const Header = () => {
           selectable={false}
         >
           <Menu.Item key="home" className="active">
-            Trang chủ
+            <Link to="/"> Trang chủ</Link>
           </Menu.Item>
-          <SubMenu key="SubMenu" title="Sản phẩm">
-            <Menu.Item key="setting:1">Option 1</Menu.Item>
-            <Menu.Item key="setting:2">Option 2</Menu.Item>
-          </SubMenu>
-          <Menu.Item key="product">Về chúng tôi</Menu.Item>
+
+          <Menu.Item key="product">
+            <Link to="/product-page">Sản phẩm</Link>
+          </Menu.Item>
+          <Menu.Item key="about">
+            <Link to="/about-us">Về chúng tôi</Link>
+          </Menu.Item>
         </Menu>
       </div>
       <div className="header-user">
@@ -69,6 +83,9 @@ const Header = () => {
             name="search"
             placeholder="Tìm kiếm"
             style={{ border: "none", borderBottom: "1px solid black" }}
+            value={wordEntered}
+            onChange={(e) => setWordEntered(e.target.value)}
+            onPressEnter={searchProduct}
           />
           <SearchOutlined />
         </div>

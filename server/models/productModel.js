@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     categoryId: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
@@ -38,7 +38,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     qtyInStock: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

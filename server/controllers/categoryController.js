@@ -7,7 +7,6 @@ import Product from "./../models/productModel.js";
 // @access  Protect/Admin
 const createCategory = asyncHandler(async (req, res) => {
   const category = new Category({
-    key: req.body.key,
     category_name: req.body.category_name,
   });
 
@@ -77,7 +76,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @access  Protect/Admin
 const deleteCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
-  const product = await Product.find({ categoryId: category.key });
+  const product = await Product.find({ categoryId: category._id });
   if (product.length !== 0) {
     res.status(406);
     res.json({

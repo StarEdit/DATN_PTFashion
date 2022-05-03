@@ -80,21 +80,8 @@
   margin-bottom: 1rem;
 }
 
-.product-information .product-color .product-color-list {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.product-information .product-color .product-color-list button {
-  margin-left: 1rem;
-}
-
-.product-information .product-color .product-color-list .active {
-  border: 1px solid red;
+.product-information .product-color .product-color-title {
+  margin-right: 2rem;
 }
 
 .product-information .product-size {

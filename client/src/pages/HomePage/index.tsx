@@ -60,7 +60,7 @@ const HomePage = () => {
         <Row justify="space-between" gutter={[32, 32]}>
           {category.map((item) => (
             <Col span={6} key={item.id}>
-              <Link to="/">
+              <Link to="/product-page">
                 <div className="category-card">
                   <div className="card-img">
                     <img src={item.image} alt="" width="100%" height="300px" />

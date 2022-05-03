@@ -51,17 +51,43 @@ const getAllProducts = asyncHandler(async (req, res) => {
   res.json({ products });
 });
 
+// @desc   Xem tất cả sản phẩm
+// @route  GET /api/product
+// @access Public
+const getProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find().sort({ name: "asc" });
+  res.json({ products });
+});
+
 // @desc    Xem sản phẩm theo danh mục
 // @route   GET /api/product/:category
 // @access  Public
 const getProductsByCategory = asyncHandler(async (req, res) => {
-  const filter = {};
+  let filter = {};
 
-  if (req.query.categoryId) {
-    filter = { categoryId: req.query.categoryId.split(",") };
+  if (req.params.category) {
+    filter = { categoryId: req.params.category.split(",") };
   }
 
   const products = await Product.find(filter);
+
+  if (products) {
+    res.json({ products });
+  } else {
+    res.status(404);
+    throw new Error("Không có sản phẩm");
+  }
+});
+
+// @desc    Xem sản phẩm theo danh mục
+// @route   GET /api/product-page/search
+// @access  Public
+const filterProduct = asyncHandler(async (req, res) => {
+  const search = req.query.name;
+
+  const products = await Product.find({
+    name: { $regex: search, $options: "$i" },
+  });
 
   if (products) {
     res.json({ products });
@@ -131,4 +157,6 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProducts,
+  filterProduct,
 };

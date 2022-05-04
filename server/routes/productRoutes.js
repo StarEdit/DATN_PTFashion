@@ -7,7 +7,6 @@ import {
   deleteProduct,
   filterProduct,
 } from "../controllers/productController.js";
-import { uploadMultiFile } from "../utils/uploadFiles.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -17,12 +16,12 @@ router.route("/product-page").get(getProductsByCategory);
 router
   .route("/product")
   .get(protect, admin, getAllProducts)
-  .post(protect, admin, uploadMultiFile, createProduct);
+  .post(protect, admin, createProduct);
 
 router
   .route("/product/:id")
   .delete(protect, admin, deleteProduct)
-  .put(protect, admin, uploadMultiFile, updateProduct);
+  .put(protect, admin, updateProduct);
 
 router.route("/product-page/search").get(filterProduct);
 router.route("/product-page/:category").get(getProductsByCategory);

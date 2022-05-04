@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
       unique: true,
     },
     listImage: {
-      type: Array,
+      type: [String],
       required: true,
     },
     categoryId: {

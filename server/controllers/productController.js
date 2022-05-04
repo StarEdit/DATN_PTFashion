@@ -5,7 +5,6 @@ import Product from "../models/productModel.js";
 // @route   POST /api/product
 // @access  Protect/Admin
 const createProduct = asyncHandler(async (req, res) => {
-  const files = req.files;
   const {
     name,
     categoryId,
@@ -15,13 +14,12 @@ const createProduct = asyncHandler(async (req, res) => {
     colors,
     sizes,
     qtyInStock,
+    listImage,
   } = req.body;
 
   const product = new Product({
     name: name,
-    listImage:
-      files &&
-      files.map((item) => `http://localhost:${process.env.PORT}/` + item.path),
+    listImage: listImage,
     categoryId: categoryId,
     description: description,
     price: price,
@@ -124,16 +122,14 @@ const updateProduct = asyncHandler(async (req, res) => {
     categoryId,
     countInStock,
     discount,
+    listImage,
   } = req.body;
-  const files = req.files;
   const product = await Product.findById(req.params.id);
 
   if (product) {
     product.name = name || product.name;
-    (product.listImage =
-      files &&
-      files.map((item) => `http://localhost:${process.env.PORT}/` + item.path)),
-      (product.price = price || product.price);
+    product.listImage = listImage || product.listImage;
+    product.price = price || product.price;
     product.description = description || product.description;
     product.weight = weight || product.weight;
     product.dimensions = dimensions || product.dimensions;

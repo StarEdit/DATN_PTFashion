@@ -29,6 +29,7 @@ export const login =
         });
 
         localStorage.setItem("userInfo", JSON.stringify(req.data));
+        localStorage.setItem("token", JSON.stringify(req.data.token));
       }
     } catch (error) {
       dispatch({

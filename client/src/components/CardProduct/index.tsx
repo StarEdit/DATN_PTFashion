@@ -9,6 +9,9 @@ import {
 import "./style.css";
 import { Product } from "types/product.types";
 import { formatMoney } from "utils/converMoney";
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { AddCartAction } from "redux/store";
 
 interface Props {
   item: Product;
@@ -19,8 +22,8 @@ const CardProduct = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [qty, setQty] = useState(1);
-  const [color, setColor] = useState<string>();
-  const [size, setSize] = useState<string>();
+  const [color, setColor] = useState<any>();
+  const [size, setSize] = useState<any>();
 
   const handleIncrease = () => {
     setQty((prev) => prev + 1);
@@ -45,17 +48,30 @@ const CardProduct = (props: Props) => {
     setIsModalVisible(false);
   };
 
-  console.log(color, size);
+  const dispatch = useDispatch();
+  const { addCart } = bindActionCreators(AddCartAction, dispatch);
+
+  const handleAddCart = () => {
+    if (color !== undefined && size !== undefined) {
+      addCart(
+        props.item._id,
+        props.item.name,
+        qty,
+        props.item.price,
+        props.item.percentSale,
+        color,
+        size
+      );
+      handleCancel();
+    } else {
+      alert("Vui lòng chọn màu và size");
+    }
+  };
 
   return (
     <>
       <Card
-        cover={
-          <img
-            alt="example"
-            src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-          />
-        }
+        cover={<img alt="example" src={props.item.listImage[0]} />}
         bodyStyle={{ padding: "0 1rem" }}
       >
         <div className="product-name">{props.item.name}</div>
@@ -150,7 +166,7 @@ const CardProduct = (props: Props) => {
               {qty}
               <PlusCircleOutlined onClick={handleIncrease} />
             </div>
-            <Button type="primary">
+            <Button type="primary" onClick={handleAddCart}>
               <ShoppingCartOutlined />
               Thêm vào giỏ hàng
             </Button>

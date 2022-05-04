@@ -7,3 +7,8 @@ export const GET_CATEGORY = `${BASE_URL}/categories`;
 export const GET_PRODUCT_CATEGORY = `${BASE_URL}/product-page`;
 export const GET_PRODUCT = `${BASE_URL}/product-page`;
 export const GET_PRODUCT_NAME = `${BASE_URL}/product-page/search?name=`;
+export const ADD_CART = `${BASE_URL}/cart`;
+export const PLUS_PRODUCT = `${BASE_URL}/cart/plus`;
+export const MINUS_PRODUCT = `${BASE_URL}/cart/minus`;
+export const DELETE_PRODUCT = `${BASE_URL}/cart/delete`;
+export const GET_TOTAL = `${BASE_URL}/cart/total`;

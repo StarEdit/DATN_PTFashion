@@ -63,13 +63,14 @@
         list-style: none;
         min-width: 18rem;
         left: -2rem;
-        top: 4rem;
+        top: 6.8rem;
         text-align: left;
-        padding-left: 2rem;
         font-size: 1.6rem;
         background-color: white;
 
         &-item {
+          padding: 1rem 0;
+          text-align: center;
         }
 
         &::after {

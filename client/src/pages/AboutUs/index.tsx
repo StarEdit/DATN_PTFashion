@@ -10,7 +10,11 @@ const AboutUs = () => {
       <Header />
       <div className="about-us-wrapper" style={{ padding: "2rem" }}>
         <Row>
-          <Col span={24}>Giới thiệu về PTFashion</Col>
+          <Col span={24}>
+            <div style={{ fontSize: "3rem", fontWeight: "700" }}>
+              Giới thiệu về PTFashion
+            </div>
+          </Col>
         </Row>
         <Row>
           <Col span={6}>Gửi xe miễn phí, dễ dàng</Col>

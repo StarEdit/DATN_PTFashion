@@ -13,10 +13,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SearchAction, userAction } from "redux/store";
 import { State } from "redux/reducers";
+import { GET_TOTAL } from "api";
+import axios from "axios";
+import { userInfo } from "types/user.types";
 
 const Header = () => {
   const [active, setActive] = useState(false);
   const [wordEntered, setWordEntered] = useState<any>();
+  const [totalProduct, setTotalProduct] = useState();
 
   const handleActive = () => {
     setActive(!active);
@@ -31,11 +35,20 @@ const Header = () => {
 
   const userInfo = useSelector((state: State) => state.userReducer.userInfo);
 
+  const userInfoFromStorage: userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo") + "")
+    : undefined;
+
+  useEffect(() => {
+    getTotal();
+  }, []);
+
   useEffect(() => {
     if (userInfo?.token === "") {
-      navigate("/login");
+      navigate("/");
+      setActive(false);
     }
-  }, [userInfo, navigate]);
+  }, [userInfoFromStorage]);
 
   const handleLogout = () => {
     logout();
@@ -47,7 +60,18 @@ const Header = () => {
       navigate(`/search?name=${wordEntered}`);
       setWordEntered("");
     }
-    console.log(wordEntered);
+  };
+
+  const getTotal = async () => {
+    const res = await axios.get(GET_TOTAL, {
+      headers: {
+        Authorization: `Bearer ${userInfoFromStorage.token}`,
+      },
+    });
+
+    if (res.data) {
+      setTotalProduct(res.data.totalProduct);
+    }
   };
 
   return (
@@ -92,11 +116,16 @@ const Header = () => {
 
         <div className="header-user-action">
           <div className="action-title" onClick={() => handleActive()}>
-            <UserOutlined /> Tài khoản
+            <UserOutlined />{" "}
+            {userInfoFromStorage ? userInfoFromStorage.name : "Tài khoản"}
           </div>
           <ul className={active ? "action-list active" : "action-list"}>
-            <li className="action-list-item">Thông tin cá nhân</li>
-            <li className="action-list-item">Cập nhật thông tin</li>
+            <li className="action-list-item">
+              <Link to="/login" style={{ color: "black" }}>
+                Đăng nhập
+              </Link>
+            </li>
+            <hr />
             <li className="action-list-item" onClick={handleLogout}>
               Đăng xuất
             </li>
@@ -106,7 +135,9 @@ const Header = () => {
           <Link to="/cart">
             <ShoppingCartOutlined />
           </Link>
-          <div className="header-user-cart-count">1</div>
+          <div className="header-user-cart-count">
+            {totalProduct ? totalProduct : 0}
+          </div>
         </div>
       </div>
     </div>

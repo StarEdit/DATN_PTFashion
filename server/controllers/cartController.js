@@ -22,21 +22,12 @@ const getCarts = asyncHandler(async (req, res) => {
 // @route   POST /api/cart
 // @access  Protect
 const createCart = asyncHandler(async (req, res) => {
-  const {
-    productId,
-    productName,
-    image,
-    quantity,
-    price,
-    percentSale,
-    color,
-    size,
-  } = req.body;
+  const { productId, productName, quantity, price, percentSale, color, size } =
+    req.body;
   const newCart = {
     userId: req.user._id,
     productId,
     productName,
-    image,
     quantity,
     price,
     percentSale,
@@ -62,6 +53,7 @@ const createCart = asyncHandler(async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Thêm sản phẩm vào giỏ hàng thành công",
+      cart,
     });
   } else {
     const newCart = await Cart.create({
@@ -70,7 +62,6 @@ const createCart = asyncHandler(async (req, res) => {
         {
           productId,
           productName,
-          image,
           quantity,
           price,
           percentSale,
@@ -101,7 +92,7 @@ const plusProduct = asyncHandler(async (req, res) => {
 
   if (carts) {
     let itemIndex = carts.products.findIndex(
-      (pro) => pro._id.toString() === req.params.id.toString()
+      (pro) => pro.productId.toString() === req.params.id.toString()
     );
     if (itemIndex === -1)
       return res
@@ -129,7 +120,7 @@ const minusProduct = asyncHandler(async (req, res) => {
 
   if (carts) {
     let itemIndex = carts.products.findIndex(
-      (pro) => pro._id.toString() === req.params.id.toString()
+      (pro) => pro.productId.toString() === req.params.id.toString()
     );
     if (itemIndex === -1)
       return res
@@ -137,6 +128,10 @@ const minusProduct = asyncHandler(async (req, res) => {
         .json({ message: "Sản phẩm không có trong giỏ hàng" });
 
     carts.products[itemIndex].quantity -= 1;
+
+    if (carts.products[itemIndex].quantity === 0) {
+      carts.products.splice(itemIndex, 1);
+    }
 
     carts = await carts.save();
 
@@ -154,7 +149,7 @@ const deleteCart = asyncHandler(async (req, res) => {
   let carts = await Cart.findOne({ userId: req.user._id });
   if (carts) {
     let itemIndex = carts.products.findIndex(
-      (pro) => pro._id.toString() === req.params.id.toString()
+      (pro) => pro.productId.toString() === req.params.id.toString()
     );
     if (itemIndex > -1) {
       carts.products.splice(itemIndex, 1);
@@ -186,10 +181,13 @@ const getTotal = asyncHandler(async (req, res) => {
       product.quantity);
   }, 0);
 
+  let totalProduct = carts.products.length;
+
   return res.status(200).json({
     success: true,
     message: "Thành công",
     total: total,
+    totalProduct: totalProduct,
   });
 });
 

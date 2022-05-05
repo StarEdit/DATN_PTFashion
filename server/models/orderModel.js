@@ -29,7 +29,7 @@ const orderSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-    paymentMethod: {
+    email: {
       type: String,
       required: true,
     },

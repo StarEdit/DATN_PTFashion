@@ -3,6 +3,8 @@ import { BrowserRouter, Outlet } from "react-router-dom";
 import RouterConfig from "./navigation/RouterConfig";
 import { BackTop } from "antd";
 import { UpOutlined } from "@ant-design/icons";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
         <RouterConfig />
       </BrowserRouter>
       <Outlet />
+
       <BackTop>
         <div
           style={{
@@ -27,6 +30,12 @@ function App() {
           <UpOutlined />
         </div>
       </BackTop>
+      <ToastContainer
+        hideProgressBar
+        position="top-center"
+        autoClose={2000}
+        closeButton={false}
+      />
     </div>
   );
 }

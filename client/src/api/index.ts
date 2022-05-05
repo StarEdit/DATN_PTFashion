@@ -12,3 +12,5 @@ export const PLUS_PRODUCT = `${BASE_URL}/cart/plus`;
 export const MINUS_PRODUCT = `${BASE_URL}/cart/minus`;
 export const DELETE_PRODUCT = `${BASE_URL}/cart/delete`;
 export const GET_TOTAL = `${BASE_URL}/cart/total`;
+export const CREATE_ORDER = `${BASE_URL}/order`;
+export const PAY_MENT = `${BASE_URL}/paymentSuccess`;

@@ -1363,6 +1363,28 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@paypal/paypal-js@^5.0.2":
+  "integrity" "sha512-OV+0Z2MgHVj6dQiE58x9vq6upWWvajbyuwYlDQ4aBkwj6sLLsdkXO8HDuYJPYoVzbX3+/Di6fNKvlUlCJiv+zA=="
+  "resolved" "https://registry.npmjs.org/@paypal/paypal-js/-/paypal-js-5.0.5.tgz"
+  "version" "5.0.5"
+  dependencies:
+    "promise-polyfill" "^8.2.3"
+
+"@paypal/react-paypal-js@^7.6.0":
+  "integrity" "sha512-GPaFXOVEh2bCNKOmLmArxWoBM6gfzoP41HfDdEr58geJi+t32/FtVKdaoxymE6f3oStaobt6KDdzxPpKuNeisQ=="
+  "resolved" "https://registry.npmjs.org/@paypal/react-paypal-js/-/react-paypal-js-7.6.0.tgz"
+  "version" "7.6.0"
+  dependencies:
+    "@paypal/paypal-js" "^5.0.2"
+    "@paypal/sdk-constants" "^1.0.116"
+
+"@paypal/sdk-constants@^1.0.116":
+  "integrity" "sha512-XNEpRzwbRXvmazOT/DmhmQ+3+Eg+O+yGpAiM6+gwBHYnBqDTZ8FKSIYTwvmdYnP9zrCFVslF965fdvsowboAqQ=="
+  "resolved" "https://registry.npmjs.org/@paypal/sdk-constants/-/sdk-constants-1.0.121.tgz"
+  "version" "1.0.121"
+  dependencies:
+    "hi-base32" "^0.5.0"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   "integrity" "sha512-zZbZeHQDnoTlt2AF+diQT0wsSXpvWiaIOZwBRdltNFhG1+I3ozyaw7U/nBiUwyJ0D+zwdXp0E3bWOl38Ag2BMw=="
   "resolved" "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.4.tgz"
@@ -3045,6 +3067,11 @@
     "string-width" "^4.2.0"
     "strip-ansi" "^6.0.0"
     "wrap-ansi" "^7.0.0"
+
+"clsx@^1.1.1":
+  "integrity" "sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA=="
+  "resolved" "https://registry.npmjs.org/clsx/-/clsx-1.1.1.tgz"
+  "version" "1.1.1"
 
 "co@^4.6.0":
   "integrity" "sha1-bqa989hTrlTMuOR7+gvz+QMfsYQ="
@@ -4819,6 +4846,11 @@
   "integrity" "sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw=="
   "resolved" "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   "version" "1.2.0"
+
+"hi-base32@^0.5.0":
+  "integrity" "sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA=="
+  "resolved" "https://registry.npmjs.org/hi-base32/-/hi-base32-0.5.1.tgz"
+  "version" "0.5.1"
 
 "history@^5.2.0":
   "integrity" "sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig=="
@@ -7313,6 +7345,11 @@
   "resolved" "https://registry.npmjs.org/progress/-/progress-2.0.3.tgz"
   "version" "2.0.3"
 
+"promise-polyfill@^8.2.3":
+  "integrity" "sha512-Og0+jCRQetV84U8wVjMNccfGCnMQ9mGs9Hv78QFe+pSDD3gWTpz0y+1QCuxy5d/vBFuZ3iwP2eycAkvqIMPmWg=="
+  "resolved" "https://registry.npmjs.org/promise-polyfill/-/promise-polyfill-8.2.3.tgz"
+  "version" "8.2.3"
+
 "promise@^8.1.0":
   "integrity" "sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q=="
   "resolved" "https://registry.npmjs.org/promise/-/promise-8.1.0.tgz"
@@ -7808,7 +7845,7 @@
     "strip-ansi" "^6.0.1"
     "text-table" "^0.2.0"
 
-"react-dom@*", "react-dom@^17.0.2", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.8", "react-dom@>=16.9.0":
+"react-dom@*", "react-dom@^17.0.2", "react-dom@>=16", "react-dom@>=16.0.0", "react-dom@>=16.11.0", "react-dom@>=16.3.0", "react-dom@>=16.8", "react-dom@>=16.9.0":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
@@ -7929,7 +7966,14 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"react@*", "react@^16.8.3 || ^17", "react@^17.0.2", "react@>= 16", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.8", "react@>=16.9.0", "react@17.0.2":
+"react-toastify@^9.0.1":
+  "integrity" "sha512-c2zeZHkCX+WXuItS/JRqQ/8CH8Qm/je+M0rt09xe9fnu5YPJigtNOdD8zX4fwLA093V2am3abkGfOowwpkrwOQ=="
+  "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-9.0.1.tgz"
+  "version" "9.0.1"
+  dependencies:
+    "clsx" "^1.1.1"
+
+"react@*", "react@^16.8.3 || ^17", "react@^17.0.2", "react@>= 16", "react@>=16", "react@>=16.0.0", "react@>=16.11.0", "react@>=16.3.0", "react@>=16.8", "react@>=16.9.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"

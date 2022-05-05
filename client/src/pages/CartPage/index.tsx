@@ -211,7 +211,7 @@ const CartPage = () => {
                 }}
               >
                 <Link to="/order">
-                  <Button type="primary">Mua ngay </Button>
+                  <Button type="primary">Đặt hàng</Button>
                 </Link>
               </div>
             </Card>

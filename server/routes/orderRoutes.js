@@ -17,8 +17,8 @@ router
 
 router
   .route("/order/:id")
-  .get(protect, getOrderById)
-  .delete(protect, deleteOrder)
+  .get(protect, admin, getOrderById)
+  .delete(protect, admin, deleteOrder)
   .patch(protect, admin, updateOrder);
 
 export default router;

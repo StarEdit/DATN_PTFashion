@@ -191,6 +191,17 @@ const getTotal = asyncHandler(async (req, res) => {
   });
 });
 
+const paymentSuccess = asyncHandler(async (req, res) => {
+  let carts = await Cart.findOne({ userId: req.user._id });
+  if (carts) {
+    await carts.remove();
+    res.json({ message: "Thanh toán thành công" });
+  } else {
+    res.status(404);
+    throw new Error("Lỗi");
+  }
+});
+
 export {
   getCarts,
   createCart,
@@ -198,4 +209,5 @@ export {
   minusProduct,
   deleteCart,
   getTotal,
+  paymentSuccess,
 };

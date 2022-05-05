@@ -8,11 +8,11 @@ import Cart from "./../models/cartModel.js";
 // @route  POST /api/order
 // @access Protect
 const createOrder = asyncHandler(async (req, res) => {
-  const { userName, address, phoneNumber, paymentMethod } = req.body;
+  const { userName, address, phoneNumber, email } = req.body;
   const user = await User.findById(req.user._id);
   const cart = await Cart.findOne({ userId: user });
 
-  if (!userName || !address || !phoneNumber || !paymentMethod) {
+  if (!userName || !address || !phoneNumber || !email) {
     res.status(400);
     throw new Error("Vui lòng nhập đủ thông tin");
   } else {
@@ -22,7 +22,7 @@ const createOrder = asyncHandler(async (req, res) => {
       userName: userName,
       address: address,
       phoneNumber: phoneNumber,
-      paymentMethod: paymentMethod === 0 ? "Trực tiếp" : "Chuyển khoản",
+      email: email,
     });
 
     await order.save();

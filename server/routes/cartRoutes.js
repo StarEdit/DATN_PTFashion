@@ -6,6 +6,7 @@ import {
   deleteCart,
   minusProduct,
   getTotal,
+  paymentSuccess,
 } from "../controllers/cartController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -20,5 +21,7 @@ router.route("/cart/plus/:id").patch(protect, plusProduct);
 router.route("/cart/minus/:id").patch(protect, minusProduct);
 
 router.route("/cart/total").get(protect, getTotal);
+
+router.route("/paymentSuccess").get(protect, paymentSuccess);
 
 export default router;

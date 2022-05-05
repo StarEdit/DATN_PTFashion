@@ -101,7 +101,7 @@ const filterProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
-    await Product.delete({ _id: req.params.id });
+    await Product.remove({ _id: req.params.id });
     res.json({ message: "Xóa sản phẩm thành công" });
   } else {
     res.status(404);

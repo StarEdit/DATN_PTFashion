@@ -53,6 +53,7 @@ const ProductPage = () => {
   return (
     <>
       <Header />
+      <hr />
       <div className="product" style={{ minHeight: "80vh" }}>
         <Row gutter={[32, 32]}>
           <Col span={6}>
@@ -89,7 +90,7 @@ const ProductPage = () => {
               <Row gutter={[32, 32]}>
                 {products &&
                   products?.map((item: Product) => (
-                    <Col span={6}>
+                    <Col key={item._id} span={6}>
                       <CardProduct item={item} />
                     </Col>
                   ))}

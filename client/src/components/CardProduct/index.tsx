@@ -52,9 +52,7 @@ const CardProduct = (props: Props) => {
   const dispatch = useDispatch();
   const { addCart } = bindActionCreators(AddCartAction, dispatch);
 
-  const userInfoFromStorage: userInfo = localStorage.getItem("userInfo")
-    ? JSON.parse(localStorage.getItem("userInfo") + "")
-    : undefined;
+  const userInfoFromStorage = localStorage.getItem("userInfo");
 
   const handleAddCart = () => {
     if (userInfoFromStorage) {

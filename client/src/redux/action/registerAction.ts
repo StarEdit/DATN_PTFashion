@@ -1,6 +1,7 @@
 import { REGISTER } from "api";
 import axios from "axios";
 import { Dispatch } from "react";
+import { toast } from "react-toastify";
 import { RegisterAction } from "types/register.types";
 import {
   USER_REGISTER_REQUEST,
@@ -10,7 +11,7 @@ import {
 } from "../actionTypes/userActionTypes";
 
 export const register =
-  (email: string, password: string) =>
+  (fullname: string, email: string, password: string) =>
   async (dispatch: Dispatch<RegisterAction>) => {
     try {
       dispatch({
@@ -18,6 +19,7 @@ export const register =
       });
 
       const req = await axios.post(REGISTER, {
+        full_name: fullname,
         email: email,
         password: password,
       });
@@ -27,12 +29,14 @@ export const register =
           type: USER_REGISTER_SUCCESS,
           message: "success",
         });
+        toast.success("Đăng ký thành công");
       }
     } catch (error: any) {
       dispatch({
         type: USER_REGISTER_FAIL,
         message: "fail",
       });
+      toast.error("Email đã tồn tại");
     } finally {
       dispatch({
         type: USER_REGISTER_FINALLY,

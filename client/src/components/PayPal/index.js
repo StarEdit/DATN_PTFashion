@@ -1,22 +1,40 @@
 import React, { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { PAY_MENT } from "api";
+import { CREATE_ORDER } from "api";
+
 import { useNavigate } from "react-router-dom";
 
-const PayPal = ({ money }) => {
+const PayPal = ({ name, address, phone, email, money }) => {
   const paypal = useRef();
   const navigate = useNavigate();
   const userInfoFromStorage = localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo") + "")
     : undefined;
 
-  const payment = async () => {
-    const res = await axios.get(PAY_MENT, {
-      headers: {
-        Authorization: `Bearer ${userInfoFromStorage.token}`,
+  const createOrderUser = async (status) => {
+    const res = await axios.post(
+      CREATE_ORDER,
+      {
+        userName: name,
+        address: address,
+        email: email,
+        phoneNumber: phone,
+        total: money,
+        status: status,
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${userInfoFromStorage.token}`,
+        },
+      }
+    );
+
+    if (res.data) {
+      toast.success(
+        "Đơn hàng của bạn đã thanh toán!!! Chúng tôi sẽ gửi hàng đến bạn sớm nhất"
+      );
+    }
   };
 
   useEffect(() => {
@@ -37,8 +55,7 @@ const PayPal = ({ money }) => {
           });
         },
         onApprove: (data, actions) => {
-          toast.success("Thanh toán thành công");
-          payment();
+          createOrderUser(2);
           navigate("/");
         },
         onError: (err) => {

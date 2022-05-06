@@ -41,7 +41,7 @@ const logout = asyncHandler(async (req, res) => {
 // @route  POST /api/user
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, isAdmin, password } = req.body;
+  const { full_name, email, isAdmin, password } = req.body;
   const user = User.create({
     ...req.body,
     isWork: true,

@@ -16,6 +16,7 @@ const OrderPage = () => {
   const [totalProduct, setTotalProduct] = useState();
   const [form] = Form.useForm<any>();
   const [checkout, setCheckOut] = useState(false);
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     getTotal();
@@ -41,7 +42,8 @@ const OrderPage = () => {
     name: String,
     address: String,
     phone: String,
-    email: String
+    email: String,
+    total: String
   ) => {
     const res = await axios.post(
       CREATE_ORDER,
@@ -50,6 +52,7 @@ const OrderPage = () => {
         address: address,
         email: email,
         phoneNumber: phone,
+        total: total,
       },
       {
         headers: {
@@ -67,10 +70,21 @@ const OrderPage = () => {
   const handleCreateOrder = () => {
     const { name, address, phone, email } = form.getFieldsValue();
     if (name && address && phone && email && total) {
-      createOrder(name, address, phone, email);
+      createOrder(name, address, phone, email, total);
       toast.success("Đặt hàng thành công");
+    } else {
+      toast.error("Vui lòng nhập thông tin trước khi đặt hàng ");
     }
-    toast.error("Vui lòng nhập thông tin trước khi đặt hàng ");
+  };
+
+  const handlePayOnl = () => {
+    const { name, address, phone, email } = form.getFieldsValue();
+    if (name && address && phone && email && total) {
+      setCheckOut(true);
+      setData(form.getFieldsValue());
+    } else {
+      toast.error("Vui lòng nhập thông tin trước khi đặt hàng ");
+    }
   };
 
   return (
@@ -115,12 +129,16 @@ const OrderPage = () => {
                 </Button>
               </Form.Item>
               {checkout ? (
-                <PayPal money={total && total} />
+                <PayPal
+                  name={data && data.name}
+                  address={data && data.address}
+                  phone={data && data.phone}
+                  email={data && data.email}
+                  money={total && total}
+                />
               ) : (
                 <Button
-                  onClick={() => {
-                    setCheckOut(true);
-                  }}
+                  onClick={handlePayOnl}
                   style={{
                     marginTop: "2rem",
                     display: "flex",

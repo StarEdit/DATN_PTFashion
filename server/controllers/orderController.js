@@ -8,7 +8,7 @@ import Cart from "./../models/cartModel.js";
 // @route  POST /api/order
 // @access Protect
 const createOrder = asyncHandler(async (req, res) => {
-  const { userName, address, phoneNumber, email } = req.body;
+  const { userName, address, phoneNumber, email, total, status } = req.body;
   const user = await User.findById(req.user._id);
   const cart = await Cart.findOne({ userId: user });
 
@@ -23,9 +23,13 @@ const createOrder = asyncHandler(async (req, res) => {
       address: address,
       phoneNumber: phoneNumber,
       email: email,
+      total: total,
+      products: cart.products,
+      status: status,
     });
 
     await order.save();
+    await cart.remove();
 
     res.status(201).json({ message: "Đặt hàng thành công" });
   }
@@ -36,6 +40,20 @@ const createOrder = asyncHandler(async (req, res) => {
 // @access Protect
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
+
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error("Không tìm thấy đơn hàng");
+  }
+});
+
+// @desc   Xem đơn hàng theo id
+// @route  GET /api/order/:id
+// @access Protect
+const getOrderUser = asyncHandler(async (req, res) => {
+  const order = await Order.find({ userId: req.user._id });
 
   if (order) {
     res.json(order);
@@ -97,4 +115,11 @@ const updateOrder = asyncHandler(async (req, res) => {
   }
 });
 
-export { createOrder, getOrders, getOrderById, deleteOrder, updateOrder };
+export {
+  createOrder,
+  getOrders,
+  getOrderById,
+  deleteOrder,
+  updateOrder,
+  getOrderUser,
+};

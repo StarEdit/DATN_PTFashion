@@ -33,12 +33,25 @@ const orderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
+    total: {
+      type: String,
+      required: true,
     },
+    products: [
+      {
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Product",
+        },
+        productName: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        price: { type: Number, required: true },
+        percentSale: { type: Number, required: true },
+        color: { type: String, required: true },
+        size: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

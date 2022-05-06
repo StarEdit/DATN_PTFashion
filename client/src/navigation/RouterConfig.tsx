@@ -11,6 +11,7 @@ import {
   SEARCH,
   ABOUT_US,
   CHANGE_PASS,
+  MY_ORDER,
 } from "./CONSTANTS";
 
 import HomePage from "../pages/HomePage";
@@ -22,6 +23,7 @@ import OrderPage from "pages/OrderPage";
 import SearchResult from "pages/SearchResult";
 import AboutUs from "pages/AboutUs";
 import ChangePassword from "pages/ChangePassword";
+import MyOrder from "pages/MyOrder";
 
 const RouterConfig = () => {
   const routes = useRoutes([
@@ -38,6 +40,7 @@ const RouterConfig = () => {
     { path: `${ORDER}`, element: <OrderPage /> },
     { path: `${SEARCH}`, element: <SearchResult /> },
     { path: `${ABOUT_US}`, element: <AboutUs /> },
+    { path: `${MY_ORDER}`, element: <MyOrder /> },
   ]);
 
   return routes;

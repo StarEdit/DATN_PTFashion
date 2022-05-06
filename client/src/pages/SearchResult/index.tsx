@@ -16,7 +16,7 @@ const SearchResult = () => {
         className="search-result-wrapper"
         style={{ padding: "2rem 2rem", minHeight: "80vh" }}
       >
-        <Row gutter={[32, 32]} justify="space-between">
+        <Row gutter={[32, 32]}>
           {product.length > 0 ? (
             product.map((item: any) => (
               <Col span={6}>

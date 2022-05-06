@@ -8,9 +8,7 @@ import { CHANGE_PASS } from "api";
 import { toast } from "react-toastify";
 
 const ChangePassword = () => {
-  const userInfoFromStorage: userInfo = localStorage.getItem("token")
-    ? JSON.parse(localStorage.getItem("userInfo") + "")
-    : undefined;
+  const token = localStorage.getItem("token");
 
   const onFinish = (values: any) => {
     const { oldPass, newPass, confirm } = values;
@@ -31,7 +29,7 @@ const ChangePassword = () => {
       },
       {
         headers: {
-          Authorization: `Bearer ${userInfoFromStorage.token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

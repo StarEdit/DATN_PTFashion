@@ -8,3 +8,4 @@ export const ORDER = "/order";
 export const SEARCH = "/search";
 export const ABOUT_US = "/about-us";
 export const CHANGE_PASS = "/user/change-password";
+export const MY_ORDER = "/user/my-order";

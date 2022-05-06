@@ -127,6 +127,12 @@ const Header = () => {
                     Đổi mật khẩu
                   </Link>
                 </li>
+                <hr />
+                <li className="action-list-item">
+                  <Link to="/user/my-order" style={{ color: "black" }}>
+                    Đơn hàng của tôi
+                  </Link>
+                </li>
               </>
             ) : (
               ""
@@ -139,9 +145,16 @@ const Header = () => {
           </ul>
         </div>
         <div className="header-user-cart">
-          <Link to="/cart">
-            <ShoppingCartOutlined />
-          </Link>
+          {userInfoFromStorage ? (
+            <Link to="/cart">
+              <ShoppingCartOutlined />
+            </Link>
+          ) : (
+            <Link to="/">
+              <ShoppingCartOutlined />
+            </Link>
+          )}
+
           <div className="header-user-cart-count">
             {totalProduct ? totalProduct : 0}
           </div>

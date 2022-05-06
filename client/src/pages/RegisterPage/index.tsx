@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 
 import bannerRegisterImg from "../../assets/images/banner-login.png";
@@ -35,8 +35,9 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     console.log(form.getFieldsValue());
-    const { email, password, confirmPassword } = form.getFieldsValue();
-    register(email, password);
+    const { fullName, email, password, confirmPassword } =
+      form.getFieldsValue();
+    register(fullName, email, password);
   };
 
   return (
@@ -54,6 +55,16 @@ const RegisterPage = () => {
         </div>
         <div className="register-right-form">
           <Form {...formItemLayout} style={{ textAlign: "left" }} form={form}>
+            <Form.Item
+              name="fullName"
+              hasFeedback
+              rules={[{ required: true, message: "Please input your name!" }]}
+            >
+              <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
+                placeholder="Name"
+              />
+            </Form.Item>
             <Form.Item
               name="email"
               hasFeedback

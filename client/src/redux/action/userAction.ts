@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { LOGIN, LOGOUT } from "api";
 import axios from "axios";
 import { Dispatch } from "react";
@@ -36,6 +37,7 @@ export const login =
         type: USER_LOGIN_FAIL,
         message: "Email hoặc mật khẩu không chính xác",
       });
+      toast.error("Email hoặc mật khẩu không chính xác");
     }
   };
 

@@ -11,19 +11,18 @@ const Footer = () => {
           <div className="footer-services">
             <h3>Sứ mệnh</h3>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries
+              Chúng tôi tin tưởng vào sức mạnh khai triển của công nghệ và mong
+              muốn góp phần làm cho thế giới trở nên tốt đẹp hơn bằng việc kết
+              nối cộng đồng người mua và người bán thông qua việc cung cấp một
+              nền tảng thương mại điện tử.
             </p>
           </div>
         </Col>
         <Col span={6}>
           <div className="footer-about">
             <h3>Về chúng tôi</h3>
-            <p>Số điện thoại: 095.366.4722</p>
-            <p>Địa chỉ: số 33 Nhân Chính, Trung Hòa, Cầu Giấy, Hà Nội</p>
+            <p>Số điện thoại: 052.302.7921</p>
+            <p>Địa chỉ: Ba La, Hà Đông, Hà Nội</p>
           </div>
         </Col>
         <Col span={6}>
@@ -46,12 +45,12 @@ const Footer = () => {
               <div className="footer-support-method-contact">
                 <div className="contact-title">Liên hệ:</div>
                 <div className="contact-list">
-                  <div className="hotline">Hotline: 036.555.1123</div>
-                  <div className="email">Email: happy.@gmal.com</div>
+                  <div className="hotline">Hotline: 052.302.7921</div>
+                  <div className="email">Email: ngophuongtan0920@gmal.com</div>
                 </div>
               </div>
               <div className="footer-support-method-address">
-                <p>Địa chỉ: Số 33 Nhân Chính, Trung Hòa, Cầu Giấy, Hà Nội</p>
+                <p>Địa chỉ: Ba La, Hà Đông, Hà Nội</p>
               </div>
             </div>
           </div>

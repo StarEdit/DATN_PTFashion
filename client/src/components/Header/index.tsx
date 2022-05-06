@@ -120,6 +120,12 @@ const Header = () => {
               </Link>
             </li>
             <hr />
+            <li className="action-list-item">
+              <Link to="/user/change-password" style={{ color: "black" }}>
+                Đổi mật khẩu
+              </Link>
+            </li>
+            <hr />
             <li className="action-list-item" onClick={handleLogout}>
               Đăng xuất
             </li>

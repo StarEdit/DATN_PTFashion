@@ -7,7 +7,7 @@ import {
   PhoneOutlined,
   DingtalkOutlined,
 } from "@ant-design/icons";
-import { banner } from "pages/HomePage/data";
+import { banner } from "./data";
 import { Image1, Image2, Image3 } from "./data";
 
 const AboutUs = () => {

@@ -12,7 +12,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { SearchAction, userAction } from "redux/store";
-import { State } from "redux/reducers";
 import { GET_TOTAL } from "api";
 import axios from "axios";
 import { userInfo } from "types/user.types";
@@ -33,25 +32,20 @@ const Header = () => {
   const { logout } = bindActionCreators(userAction, dispatch);
   const { search } = bindActionCreators(SearchAction, dispatch);
 
-  const userInfo = useSelector((state: State) => state.userReducer.userInfo);
-
   const userInfoFromStorage: userInfo = localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo") + "")
     : undefined;
 
   useEffect(() => {
-    getTotal();
-  }, []);
-
-  useEffect(() => {
-    if (userInfo?.token === "") {
-      navigate("/");
-      setActive(false);
+    if (userInfoFromStorage) {
+      getTotal();
     }
-  }, [userInfoFromStorage]);
+  }, []);
 
   const handleLogout = () => {
     logout();
+    navigate("/login");
+    setActive(false);
   };
 
   const searchProduct = async () => {

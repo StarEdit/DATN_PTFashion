@@ -24,13 +24,13 @@ import AboutUs from "pages/AboutUs";
 const RouterConfig = () => {
   const routes = useRoutes([
     { path: `${ROOT}`, element: <HomePage /> },
-    { path: `${LOGIN}`, element: <LoginPage /> },
-    { path: `${REGISTER}`, element: <RegisterPage /> },
     {
       path: `${PRODUCT}`,
       element: <ProductPage />,
       children: [{ path: `${PRODUCT_CATEGORY}`, element: <ProductPage /> }],
     },
+    { path: `${LOGIN}`, element: <LoginPage /> },
+    { path: `${REGISTER}`, element: <RegisterPage /> },
     { path: `${CART}`, element: <CartPage /> },
     { path: `${ORDER}`, element: <OrderPage /> },
     { path: `${SEARCH}`, element: <SearchResult /> },

@@ -75,9 +75,14 @@ const LoginPage = () => {
               />
             </Form.Item>
             <Form.Item>
-              <Link className="login-form-forgot" to="/">
-                Forgot password
-              </Link>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Link className="login-form-forgot" to="/">
+                  Forgot password
+                </Link>
+                <Link className="login-form-forgot" to="/">
+                  Vào trang chủ
+                </Link>
+              </div>
             </Form.Item>
 
             <Form.Item style={{ textAlign: "center" }}>

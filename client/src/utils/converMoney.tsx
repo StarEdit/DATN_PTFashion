@@ -1,6 +1,6 @@
 export const formatMoney = (cash: number) => {
-  return Intl.NumberFormat("vi-VN", {
+  return Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "VND",
+    currency: "USD",
   }).format(cash);
 };

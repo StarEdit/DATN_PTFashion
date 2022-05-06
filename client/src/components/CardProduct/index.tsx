@@ -5,14 +5,15 @@ import {
   PlusCircleOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
-
-import "./style.css";
+import { toast } from "react-toastify";
 import { Product } from "types/product.types";
 import { formatMoney } from "utils/converMoney";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { AddCartAction } from "redux/store";
+import { userInfo } from "types/user.types";
 
+import "./style.css";
 interface Props {
   item: Product;
 }
@@ -51,27 +52,41 @@ const CardProduct = (props: Props) => {
   const dispatch = useDispatch();
   const { addCart } = bindActionCreators(AddCartAction, dispatch);
 
+  const userInfoFromStorage: userInfo = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo") + "")
+    : undefined;
+
   const handleAddCart = () => {
-    if (color !== undefined && size !== undefined) {
-      addCart(
-        props.item._id,
-        props.item.name,
-        qty,
-        props.item.price,
-        props.item.percentSale,
-        color,
-        size
-      );
-      handleCancel();
+    if (userInfoFromStorage) {
+      if (color !== undefined && size !== undefined) {
+        addCart(
+          props.item._id,
+          props.item.name,
+          qty,
+          props.item.price,
+          props.item.percentSale,
+          color,
+          size
+        );
+        handleCancel();
+        toast.success("Thêm hàng thành công");
+      } else {
+        toast.info("Vui lòng chọn màu và kích cỡ");
+      }
     } else {
-      alert("Vui lòng chọn màu và size");
+      toast.info("Vui lòng đăng nhập để mua hàng");
+      handleCancel();
     }
   };
 
   return (
     <>
       <Card
-        cover={<img alt="example" src={props.item.listImage[0]} />}
+        cover={
+          <div className="card-img-show">
+            <img alt="image" src={props.item.listImage[0]} height="200px" />
+          </div>
+        }
         bodyStyle={{ padding: "0 1rem" }}
       >
         <div className="product-name">{props.item.name}</div>
@@ -99,21 +114,20 @@ const CardProduct = (props: Props) => {
         <Image
           preview={{ visible: false }}
           width="100%"
-          src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp"
+          src={props.item.listImage[0]}
           onClick={() => setVisible(true)}
           height="400px"
         />
-        <div style={{ display: "none" }}>
+        <div style={{ display: "none", width: "500px" }}>
           <Image.PreviewGroup
             preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
           >
-            <Image src="https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp" />
-            <Image src="https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp" />
-            <Image src="https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp" />
+            {props.item.listImage &&
+              props.item.listImage.map((item) => <Image src={item} />)}
           </Image.PreviewGroup>
         </div>
         <div className="product-information">
-          <div className="product-name">{props.item.name}</div>
+          <div className="product-name-detail">{props.item.name}</div>
           <div className="product-price">
             <div className="title-price">Giá bán:</div>
             <div className="new-price">
@@ -123,6 +137,9 @@ const CardProduct = (props: Props) => {
               )}
             </div>
             <div className="old-price">{formatMoney(props.item.price)}</div>
+          </div>
+          <div className="product-category">
+            Loại hình: {props.item.description}
           </div>
           <hr style={{ margin: "2rem 0" }} />
           <div className="product-color">

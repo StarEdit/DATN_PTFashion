@@ -67,6 +67,7 @@
         text-align: left;
         font-size: 1.6rem;
         background-color: white;
+        border: 1px solid rgb(82, 80, 80);
 
         &-item {
           padding: 1rem 0;
@@ -85,11 +86,11 @@
         &::before {
           content: "";
           position: absolute;
-          top: -1.3rem;
+          top: -1.4rem;
           right: 8rem;
           border-left: 1.4rem solid transparent;
           border-right: 1.4rem solid transparent;
-          border-bottom: 1.4rem solid white;
+          border-bottom: 1.4rem solid rgb(82, 80, 80);
         }
       }
     }

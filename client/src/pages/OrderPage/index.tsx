@@ -7,11 +7,12 @@ import axios from "axios";
 import { CREATE_ORDER, GET_TOTAL } from "api";
 import { userInfo } from "types/user.types";
 import PayPal from "components/PayPal";
+import { formatMoney } from "utils/converMoney";
 
 import "./style.css";
 
 const OrderPage = () => {
-  const [total, setTotal] = useState<String>();
+  const [total, setTotal] = useState<any>();
   const [totalProduct, setTotalProduct] = useState();
   const [form] = Form.useForm<any>();
   const [checkout, setCheckOut] = useState(false);
@@ -154,7 +155,7 @@ const OrderPage = () => {
                   Tổng sản phẩm: {totalProduct && totalProduct}
                 </div>
                 <div style={{ padding: "1rem 0" }}>
-                  Tổng tiền: {total && total}
+                  Tổng tiền: {total && formatMoney(total)}
                 </div>
               </Card>
             </Col>

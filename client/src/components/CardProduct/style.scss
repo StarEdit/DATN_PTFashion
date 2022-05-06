@@ -3,12 +3,28 @@
   text-align: center;
   font-weight: 700;
   padding-bottom: 2rem;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 25px;
+  -webkit-line-clamp: 2;
+  height: 50px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.product-name-detail {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  padding-bottom: 2rem;
 }
 
 .product-desc {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 2rem 0 1rem 0;
 
   .product-price {
     font-size: 1.6rem;
@@ -103,4 +119,8 @@
       }
     }
   }
+}
+
+.card-img-show > img {
+  width: 100%;
 }

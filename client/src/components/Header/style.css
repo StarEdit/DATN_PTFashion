@@ -84,6 +84,7 @@
   text-align: left;
   font-size: 1.6rem;
   background-color: white;
+  border: 1px solid #525050;
 }
 
 .header-user-action .action-list-item {
@@ -103,11 +104,11 @@
 .header-user-action .action-list::before {
   content: "";
   position: absolute;
-  top: -1.3rem;
+  top: -1.4rem;
   right: 8rem;
   border-left: 1.4rem solid transparent;
   border-right: 1.4rem solid transparent;
-  border-bottom: 1.4rem solid white;
+  border-bottom: 1.4rem solid #525050;
 }
 
 .header-user-cart {

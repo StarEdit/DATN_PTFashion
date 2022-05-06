@@ -12,6 +12,8 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.route("/product-page").get(getProductsByCategory);
+router.route("/product-page/:category").get(getProductsByCategory);
+router.route("/product-page/search").get(filterProduct);
 
 router
   .route("/product")
@@ -22,8 +24,5 @@ router
   .route("/product/:id")
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
-
-router.route("/product-page/search").get(filterProduct);
-router.route("/product-page/:category").get(getProductsByCategory);
 
 export default router;

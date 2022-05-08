@@ -106,24 +106,31 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 // @desc   Cập nhật thông tin người dùng
 // @route  PUT /api/user/info
-// @access Protect
+// @access Protect/Admin
 const updateUserInfo = asyncHandler(async (req, res) => {
-  const { full_name, email, phone, address } = req.body;
-  const user = await User.findById(req.user._id);
+  const { full_name, email, phone, address, isAdmin } = req.body;
+
+  const user = await User.findById(req.params.id);
+
   if (user) {
-    user.full_name = full_name || user.full_name;
-    user.email = email || user.email;
-    user.phone = phone || user.phone;
-    user.address = address || user.address;
-    user.password = user.password;
-    user.isWork = user.isWork;
-    user.isAdmin = user.isAdmin;
+    if (user.isAdmin) {
+      res.status(405);
+      throw new Error("Bạn không có quyền cập nhật các tài khoản admin khác");
+    } else {
+      user.full_name = full_name || user.full_name;
+      user.email = email || user.email;
+      user.phone = phone || user.phone;
+      user.address = address || user.address;
+      user.password = user.password;
+      user.isWork = user.isWork;
+      user.isAdmin = isAdmin || user.isAdmin;
 
-    await user.save();
+      await user.save();
 
-    res.json({
-      message: "Cập nhật thành công!",
-    });
+      res.json({
+        message: "Cập nhật thành công!",
+      });
+    }
   } else {
     res.status(404);
     throw new Error("Không tìm thấy người dùng");

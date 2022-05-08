@@ -78,14 +78,13 @@ const deleteCategory = asyncHandler(async (req, res) => {
   const category = await Category.findById(req.params.id);
   const product = await Product.find({ categoryId: category._id });
   if (product.length !== 0) {
-    res.status(406);
-    res.json({
+    res.status(406).json({
       message: "không thể xóa danh mục này",
     });
   } else {
     if (category) {
       await Category.delete({ _id: req.params.id });
-      res.json({ message: "Xóa danh mục thành công" });
+      res.status(200).json({ message: "Xóa danh mục thành công" });
     } else {
       res.status(404);
       throw new Error("Không tồn tại danh mục này");

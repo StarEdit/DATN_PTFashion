@@ -73,7 +73,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
 // @desc   Xóa đơn hàng
 // @route  delete /api/order/:id
-// @access Protect
+// @access Protect/Admin
 const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -81,10 +81,10 @@ const deleteOrder = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Đơn hàng không tồn tại");
   } else {
-    if (order.status === 1) {
+    if (order.status === 1 || order.status === 2) {
       res.status(401);
       throw new Error(
-        "Đơn hàng của bạn đang được giao! Không thể hủy đơn hàng"
+        "Không thể xóa những đơn hàng đang giao hoặc đã thanh toán"
       );
     } else {
       await order.remove();
@@ -102,12 +102,19 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const updateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (order) {
-    order.status = req.body.status;
-    order.save();
-    res.status(200).json({
-      message: `Bạn vừa xác nhận đơn hàng có mã là ${req.params.id}`,
-      order,
-    });
+    if (order.status === 1 || order.status === 2) {
+      res.status(401);
+      throw new Error(
+        "Không thể xác nhận những đơn hàng đang giao hoặc đã thanh toán"
+      );
+    } else {
+      order.status = req.body.status;
+      order.save();
+      res.status(200).json({
+        message: `Bạn vừa xác nhận đơn hàng có mã là ${req.params.id}`,
+        order,
+      });
+    }
   } else {
     res.status(404).json({
       message: "Không tồn tại đơn hàng này",

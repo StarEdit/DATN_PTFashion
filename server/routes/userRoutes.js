@@ -23,10 +23,7 @@ router.route("/user/forgot-password").post(forgotPassword);
 
 router.route("/user/change-password").put(protect, updatePassword);
 
-router
-  .route("/user/info")
-  .get(protect, getUserInfo)
-  .put(protect, updateUserInfo);
+router.route("/user/info").get(protect, getUserInfo);
 
 router.route("/user/logout").post(logout);
 
@@ -35,6 +32,7 @@ router.route("/user/profile").get(protect, admin, getUserProfile);
 router
   .route("/user/:id")
   .get(protect, admin, getUserById)
-  .delete(protect, admin, deleteUser);
+  .delete(protect, admin, deleteUser)
+  .put(protect, admin, updateUserInfo);
 
 export default router;

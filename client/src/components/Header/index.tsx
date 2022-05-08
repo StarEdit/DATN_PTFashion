@@ -15,6 +15,7 @@ import { SearchAction, userAction } from "redux/store";
 import { GET_TOTAL } from "api";
 import axios from "axios";
 import { userInfo } from "types/user.types";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [active, setActive] = useState(false);
@@ -151,7 +152,9 @@ const Header = () => {
             </Link>
           ) : (
             <Link to="/">
-              <ShoppingCartOutlined />
+              <ShoppingCartOutlined
+                onClick={() => toast.info("Đăng nhập để xem giỏ hàng")}
+              />
             </Link>
           )}
 

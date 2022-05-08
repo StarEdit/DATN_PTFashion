@@ -1,0 +1,9 @@
+.login {
+    height: 100vh;
+
+    background-color: #001628;
+}
+
+.login-form {
+    padding: 5% 0;
+}

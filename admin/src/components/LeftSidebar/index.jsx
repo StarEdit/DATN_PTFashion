@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, Row, Col } from "antd";
 import {
   UserSwitchOutlined,
-  LineChartOutlined,
   MenuOutlined,
   DingtalkOutlined,
   DollarOutlined,
@@ -21,32 +20,26 @@ function getItem(label, key, icon, route) {
 
 const items = [
   getItem(
-    "Thống kê",
-    "1",
-    <LineChartOutlined style={{ fontSize: "2rem", marginRight: "1rem" }} />,
-    ""
-  ),
-  getItem(
     "Danh mục",
-    "2",
+    "1",
     <MenuOutlined style={{ fontSize: "2rem", marginRight: "1rem" }} />,
     "/category"
   ),
   getItem(
     "Sản phẩm",
-    "3",
+    "2",
     <DingtalkOutlined style={{ fontSize: "2rem", marginRight: "1rem" }} />,
     "/product"
   ),
   getItem(
     "Đơn hàng",
-    "4",
+    "3",
     <DollarOutlined style={{ fontSize: "2rem", marginRight: "1rem" }} />,
     "/order"
   ),
   getItem(
     "Tài khoản",
-    "5",
+    "4",
     <UserSwitchOutlined style={{ fontSize: "2rem", marginRight: "1rem" }} />,
     "/account"
   ),

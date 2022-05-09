@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProduct,
   filterProduct,
+  getProductsById,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -22,6 +23,7 @@ router
 
 router
   .route("/product/:id")
+  .get(protect, admin, getProductsById)
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
 

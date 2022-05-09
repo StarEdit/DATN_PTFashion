@@ -9,12 +9,18 @@ import {
   Form,
   Input,
   Select,
+  Image,
 } from "antd";
 import Header from "../../components/Header";
 import LeftSidebar from "../../components/LeftSidebar";
 import axios from "axios";
 import { GET_PRODUCT, GET_CATEGORY } from "../../api";
-import { FormOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  FormOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -24,7 +30,9 @@ const ProductPage = () => {
   const userInfo = localStorage.getItem("userInfo");
   const token = JSON.parse(userInfo).token;
   const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState();
   const [categories, setCategories] = useState([]);
+  const [isModalVisibleView, setIsModalVisibleView] = useState(false);
   const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
   const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
   const [isModalVisibleDelete, setIsModalVisibleDelete] = useState(false);
@@ -41,6 +49,16 @@ const ProductPage = () => {
   };
   const handleCancel = () => {
     setIsModalVisibleAdd(false);
+  };
+
+  const showModalView = () => {
+    setIsModalVisibleView(true);
+  };
+  const handleOkView = () => {
+    setIsModalVisibleView(false);
+  };
+  const handleCancelView = () => {
+    setIsModalVisibleView(false);
   };
 
   const showModalEdit = () => {
@@ -191,6 +209,23 @@ const ProductPage = () => {
     console.log(value);
   };
 
+  const viewDetailProduct = async (id) => {
+    try {
+      const res = await axios.get(`${GET_PRODUCT}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data) {
+        setProduct(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      handleCancel();
+    }
+  };
+
   const columns = [
     {
       title: "Tên sản phẩm",
@@ -201,12 +236,29 @@ const ProductPage = () => {
       dataIndex: "price",
     },
     {
-      title: "Phần trăm khuyến mãi",
+      title: "khuyến mãi(%)",
       dataIndex: "percentSale",
     },
     {
-      title: "Số lượng trong kho",
-      dataIndex: "qtyInStock",
+      title: "Xem",
+      render: () => {
+        return (
+          <div className="cart-qty-action" style={{ fontSize: "2rem" }}>
+            <Tooltip placement="top" title="Xem chi tiết">
+              <EyeOutlined />
+            </Tooltip>
+          </div>
+        );
+      },
+      onCell: (record) => {
+        return {
+          onClick: () => {
+            navigate(`/admin/product/${record._id}`);
+            viewDetailProduct(record._id);
+            showModalView();
+          },
+        };
+      },
     },
     {
       title: "Sửa",
@@ -302,6 +354,38 @@ const ProductPage = () => {
           </Row>
         </Col>
       </Row>
+      {/* Xem chi tiết */}
+      <Modal
+        width="66vw"
+        title="Xem chi tiết"
+        footer={null}
+        visible={isModalVisibleView}
+        onOk={handleOkView}
+        onCancel={handleCancelView}
+        destroyOnClose={true}
+      >
+        <div>Tên sản phẩm: {product && product.name}</div>
+        <div>Mã danh mục: {product && product.categoryId}</div>
+        <div>Mô tả: {product && product.description}</div>
+        <div>Giá sản phẩm: {product && product.price}</div>
+        <div>Khuyến mãi(%): {product && product.percentSale}</div>
+        <div>Số lượng: {product && product.qtyInStock}</div>
+        <div>Màu sắc: {product && product.colors.toString()}</div>
+        <div>Kích cỡ: {product && product.sizes.toString()}</div>
+        <div>Hình ảnh sản phẩm</div>
+        {product && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {product.listImage.map((item, index) => (
+              <Image key={index} width={200} src={item} />
+            ))}
+          </div>
+        )}
+      </Modal>
       {/* Thêm modal */}
       <Modal
         width="70vw"

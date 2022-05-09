@@ -1,9 +1,9 @@
-export const ROOT = "/admin";
-export const LOGIN = "/admin/login";
+export const ROOT = "/admin/login";
 export const PRODUCT = "/admin/product";
 export const PRODUCT_EDIT = "/admin/product/:productId";
 export const CATEGORY = "/admin/category";
 export const CATEGORY_EDIT = "/admin/category/:categoryId";
 export const ORDER = "/admin/order";
+export const ORDER_EDIT = "/admin/order/:orderId";
 export const ACCOUNT = "/admin/account";
 export const ACCOUNT_EDIT = "/admin/account/:accountId";

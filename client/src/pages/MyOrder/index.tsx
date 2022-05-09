@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import axios from "axios";
 import { userInfo } from "types/user.types";
 import { Table, Row, Col } from "antd";
-import { formatMoney } from "utils/converMoney";
+import { formatMoney } from "utils/convertMoney";
 
 const MyOrder = () => {
   const userInfoFromStorage: userInfo = localStorage.getItem("userInfo")
@@ -83,7 +83,8 @@ const MyOrder = () => {
   return (
     <>
       <Header />
-      <div>
+      <hr />
+      <div style={{ height: "60vh" }}>
         <Row>
           <Col span={24}>
             <Table pagination={false} columns={columns} dataSource={orders} />

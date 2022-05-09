@@ -20,6 +20,7 @@ import {
   PLUS_PRODUCT,
 } from "api";
 import { userInfo } from "types/user.types";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const [data, setData] = useState();
@@ -210,9 +211,24 @@ const CartPage = () => {
                   padding: "2rem 0",
                 }}
               >
-                <Link to="/order">
-                  <Button type="primary">Đặt hàng</Button>
-                </Link>
+                {totalProduct && totalProduct > 0 ? (
+                  <Link to="/order">
+                    <Button type="primary">Đặt hàng</Button>
+                  </Link>
+                ) : (
+                  <Link to="/cart">
+                    <Button
+                      type="primary"
+                      onClick={() =>
+                        toast.info(
+                          "Vui lòng thêm sản phẩm vào giỏ hàng trước khi đặt"
+                        )
+                      }
+                    >
+                      Đặt hàng
+                    </Button>
+                  </Link>
+                )}
               </div>
             </Card>
           </Col>

@@ -77,6 +77,17 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
   }
 });
 
+const getProductsById = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404);
+    throw new Error("Không tìm thấy sản phẩm");
+  }
+});
+
 // @desc    Xem sản phẩm theo danh mục
 // @route   GET /api/product-page/search
 // @access  Public
@@ -155,4 +166,5 @@ export {
   deleteProduct,
   getProducts,
   filterProduct,
+  getProductsById,
 };

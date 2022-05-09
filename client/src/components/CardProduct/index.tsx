@@ -7,13 +7,12 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { Product } from "types/product.types";
-import { formatMoney } from "utils/converMoney";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { AddCartAction } from "redux/store";
-import { userInfo } from "types/user.types";
 
 import "./style.css";
+import { formatMoney } from "utils/convertMoney";
 interface Props {
   item: Product;
 }

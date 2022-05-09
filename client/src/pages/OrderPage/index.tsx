@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Form, Input, Radio, Row } from "antd";
+import { Button, Card, Col, Form, Input, Row } from "antd";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import { toast } from "react-toastify";
@@ -7,9 +7,9 @@ import axios from "axios";
 import { CREATE_ORDER, GET_TOTAL } from "api";
 import { userInfo } from "types/user.types";
 import PayPal from "components/PayPal";
-import { formatMoney } from "utils/converMoney";
-
+import { useNavigate } from "react-router";
 import "./style.css";
+import { formatMoney } from "utils/convertMoney";
 
 const OrderPage = () => {
   const [total, setTotal] = useState<any>();
@@ -17,6 +17,7 @@ const OrderPage = () => {
   const [form] = Form.useForm<any>();
   const [checkout, setCheckOut] = useState(false);
   const [data, setData] = useState<any>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getTotal();
@@ -72,6 +73,7 @@ const OrderPage = () => {
     if (name && address && phone && email && total) {
       createOrder(name, address, phone, email, total);
       toast.success("Đặt hàng thành công");
+      navigate("/");
     } else {
       toast.error("Vui lòng nhập thông tin trước khi đặt hàng ");
     }

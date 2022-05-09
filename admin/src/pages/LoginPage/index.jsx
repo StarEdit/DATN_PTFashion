@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     if (res.data) {
       localStorage.setItem("userInfo", JSON.stringify(res.data));
-      navigate("/admin");
+      navigate("/admin/category");
     }
   };
 

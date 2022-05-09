@@ -9,3 +9,5 @@ export const LOGIN = `${BASE_URL}/user/login`;
 export const LOGOUT = `${BASE_URL}/user/logout`;
 
 export const GET_PRODUCT = `${BASE_URL}/product`;
+
+export const GET_ORDER = `${BASE_URL}/order`;

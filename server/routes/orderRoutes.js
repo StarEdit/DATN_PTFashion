@@ -11,12 +11,12 @@ import {
 
 const router = express.Router();
 
+router.route("/order/user").get(protect, getOrderUser);
+
 router
   .route("/order")
   .post(protect, createOrder)
   .get(protect, admin, getOrders);
-
-router.route("/order/user").get(protect, getOrderUser);
 
 router
   .route("/order/:id")

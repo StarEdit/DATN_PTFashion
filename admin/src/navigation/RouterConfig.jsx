@@ -8,25 +8,25 @@ import {
   CATEGORY,
   CATEGORY_EDIT,
   ORDER,
+  ORDER_EDIT,
   ACCOUNT,
   ACCOUNT_EDIT,
 } from "./CONSTANTS.js";
 
-import ChartPage from "../pages/ChartPage";
 import CategoryPage from "../pages/CategoryPage";
 import LoginPage from "../pages/LoginPage";
 import AccountPage from "../pages/AccountPage";
 import ProductPage from "../pages/ProductPage";
+import OrderPage from "../pages/OrderPage";
 
 const RouterConfig = () => {
   const routes = useRoutes([
-    { path: `${ROOT}`, element: <ChartPage /> },
     {
       path: `${PRODUCT}`,
       element: <ProductPage />,
       children: [{ path: `${PRODUCT_EDIT}`, element: <ProductPage /> }],
     },
-    { path: `${LOGIN}`, element: <LoginPage /> },
+    { path: `${ROOT}`, element: <LoginPage /> },
     {
       path: `${CATEGORY}`,
       element: <CategoryPage />,
@@ -37,7 +37,11 @@ const RouterConfig = () => {
       element: <AccountPage />,
       children: [{ path: `${ACCOUNT_EDIT}`, element: <AccountPage /> }],
     },
-    // { path: `${ORDER}`, element: <OrderPage /> },
+    {
+      path: `${ORDER}`,
+      element: <OrderPage />,
+      children: [{ path: `${ORDER_EDIT}`, element: <OrderPage /> }],
+    },
   ]);
 
   return routes;

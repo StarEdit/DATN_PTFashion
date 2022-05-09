@@ -37,7 +37,7 @@ const createOrder = asyncHandler(async (req, res) => {
 
 // @desc   Xem đơn hàng theo id
 // @route  GET /api/order/:id
-// @access Protect
+// @access Protect/Admin
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -102,11 +102,9 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const updateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
   if (order) {
-    if (order.status === 1 || order.status === 2) {
+    if (order.status === 2) {
       res.status(401);
-      throw new Error(
-        "Không thể xác nhận những đơn hàng đang giao hoặc đã thanh toán"
-      );
+      throw new Error("Không thể sửa những đơn hàng đã thanh toán");
     } else {
       order.status = req.body.status;
       order.save();

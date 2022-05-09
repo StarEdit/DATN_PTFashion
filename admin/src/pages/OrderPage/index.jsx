@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Table,
-  Tooltip,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Radio,
-} from "antd";
+import { Row, Col, Table, Tooltip, Button, Modal, Form, Select } from "antd";
 import Header from "../../components/Header";
 import LeftSidebar from "../../components/LeftSidebar";
 import axios from "axios";
-import { GET_ACCOUNT, ADD_ACCOUNT } from "../../api";
-import { FormOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { GET_ORDER } from "../../api";
+import {
+  FormOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
 
-const AccountPage = () => {
+const { Option } = Select;
+
+const OrderPage = () => {
   const userInfo = localStorage.getItem("userInfo");
   const token = JSON.parse(userInfo).token;
-  const [accounts, setAccounts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState({});
+  const [editValue, setEditValue] = useState({});
   const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
   const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
   const [isModalVisibleDelete, setIsModalVisibleDelete] = useState(false);
-  const { accountId } = useParams();
-  const [formEdit] = Form.useForm();
+  const { orderId } = useParams();
 
   const navigate = useNavigate();
 
@@ -38,6 +36,7 @@ const AccountPage = () => {
   };
   const handleCancel = () => {
     setIsModalVisibleAdd(false);
+    navigate("/admin/order");
   };
 
   const showModalEdit = () => {
@@ -48,7 +47,7 @@ const AccountPage = () => {
   };
   const handleCancelEdit = () => {
     setIsModalVisibleEdit(false);
-    navigate("/admin/account");
+    navigate("/admin/order");
   };
 
   const showModalDelete = () => {
@@ -59,28 +58,28 @@ const AccountPage = () => {
   };
   const handleCancelDelete = () => {
     setIsModalVisibleDelete(false);
-    navigate("/admin/account");
+    navigate("/admin/order");
   };
 
   useEffect(() => {
-    callbackAccount();
+    callbackOrder();
   }, []);
 
-  const callbackAccount = async () => {
-    const res = await axios.get(GET_ACCOUNT, {
+  const callbackOrder = async () => {
+    const res = await axios.get(GET_ORDER, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
     if (res.data) {
-      setAccounts(res.data.user);
+      setOrders(res.data.orders);
     }
   };
 
   const deleteAccount = async (id) => {
     try {
-      const res = await axios.delete(`${ADD_ACCOUNT}/${id}`, {
+      const res = await axios.delete(`${GET_ORDER}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,53 +87,39 @@ const AccountPage = () => {
 
       if (res) {
         toast.success("Xóa thành công");
-        callbackAccount();
-        navigate("/admin/account");
+        callbackOrder();
+        navigate("/admin/order");
         handleCancelDelete();
       }
     } catch (error) {
       toast.error("Xóa không thành công");
-      navigate("/admin/account");
+      navigate("/admin/order");
       handleCancelDelete();
     }
   };
 
-  const addAccount = async (value) => {
+  const viewDetailOrder = async (id) => {
     try {
-      const res = await axios.post(
-        ADD_ACCOUNT,
-        {
-          full_name: value.userName,
-          email: value.email,
-          password: value.password,
-          isAdmin: value.level,
+      const res = await axios.get(`${GET_ORDER}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      });
 
       if (res.data) {
-        toast.success("Thêm thành công");
-        callbackAccount();
-        handleCancel();
+        setOrder(res.data);
       }
     } catch (error) {
-      toast.error("Thêm không thành công");
       handleCancel();
     }
   };
 
-  const editAccount = async (value) => {
+  const updateStatus = async (value) => {
     try {
-      const res = await axios.put(
-        `${ADD_ACCOUNT}/${accountId}`,
+      const res = await axios.patch(
+        `${GET_ORDER}/${orderId}`,
         {
-          full_name: value.userName,
-          email: value.email,
-          isAdmin: value.level,
+          status: value.status,
         },
         {
           headers: {
@@ -144,13 +129,13 @@ const AccountPage = () => {
       );
 
       if (res.data) {
-        toast.success("Sửa thành công");
-        callbackAccount();
+        toast.success("Xác nhận thành công");
+        callbackOrder();
         handleCancelEdit();
-        navigate("/admin/account");
+        navigate("/admin/order");
       }
     } catch (error) {
-      toast.error("Sửa không thành công");
+      toast.error("Không thể thay đổi những đơn hàng đã thanh toán");
       handleCancelEdit();
     }
   };
@@ -158,24 +143,59 @@ const AccountPage = () => {
   const columns = [
     {
       title: "Tên người dùng",
-      dataIndex: "full_name",
+      dataIndex: "userName",
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phoneNumber",
     },
     {
       title: "Email",
       dataIndex: "email",
     },
     {
-      title: "Quyền",
-      dataIndex: "isAdmin",
-      render: (isAdmin) => {
-        switch (isAdmin) {
-          case true:
-            return "Quản trị viên";
-          case false:
-            return "Khách hàng";
+      title: "Trạng thái",
+      dataIndex: "status",
+      render: (status) => {
+        switch (status) {
+          case 0:
+            return "Chờ xét duyệt";
+          case 1:
+            return "Đang giao hàng";
+          case 2:
+            return "Đã thanh toán";
           default:
             return "";
         }
+      },
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "total",
+    },
+    {
+      title: "Xem",
+      render: () => {
+        return (
+          <div className="cart-qty-action" style={{ fontSize: "2rem" }}>
+            <Tooltip placement="top" title="Xem chi tiết">
+              <EyeOutlined />
+            </Tooltip>
+          </div>
+        );
+      },
+      onCell: (record) => {
+        return {
+          onClick: () => {
+            navigate(`/admin/order/${record._id}`);
+            viewDetailOrder(record._id);
+            showModal();
+          },
+        };
       },
     },
     {
@@ -192,12 +212,9 @@ const AccountPage = () => {
       onCell: (record) => {
         return {
           onClick: () => {
-            navigate(`/admin/account/${record._id}`);
+            navigate(`/admin/order/${record._id}`);
             showModalEdit();
-            formEdit.setFieldsValue({
-              userName: record.full_name,
-              email: record.email,
-            });
+            setEditValue(record.status);
           },
         };
       },
@@ -216,7 +233,7 @@ const AccountPage = () => {
       onCell: (record) => {
         return {
           onClick: () => {
-            navigate(`/admin/account/${record._id}`);
+            navigate(`/admin/order/${record._id}`);
             showModalDelete();
           },
         };
@@ -228,6 +245,47 @@ const AccountPage = () => {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
   };
+
+  const viewDetailCol = [
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+    },
+    {
+      title: "Màu sắc",
+      dataIndex: "color",
+    },
+    {
+      title: "Kích cỡ",
+      dataIndex: "size",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Giá tiền",
+      dataIndex: "price",
+    },
+    {
+      title: "Phần trăm khuyến mãi",
+      dataIndex: "percentSale",
+    },
+  ];
+
+  const renderSwitch = (param) => {
+    switch (param) {
+      case 0:
+        return "Chờ xét duyệt";
+      case 1:
+        return "Đang giao hàng";
+      case 2:
+        return "Đã thanh toán";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div style={{ margin: "0 2rem" }}>
       <Row gutter={[32, 32]} justify="space-between">
@@ -243,13 +301,7 @@ const AccountPage = () => {
               <div style={{ paddingTop: "14vh", paddingBottom: "2rem" }}>
                 <Row>
                   <Col span={6} style={{ textAlign: "left" }}>
-                    Quản lý tài khoản PTFashion
-                  </Col>
-                  <Col offset={14} span={4} style={{ textAlign: "right" }}>
-                    <Button onClick={showModal}>
-                      <FormOutlined />
-                      Thêm mới
-                    </Button>
+                    Quản lý đơn hàng PTFashion
                   </Col>
                 </Row>
               </div>
@@ -257,7 +309,7 @@ const AccountPage = () => {
             <Col span={24}>
               <Table
                 pagination={false}
-                dataSource={accounts}
+                dataSource={orders}
                 columns={columns}
                 rowKey={(record) => record._id}
               />
@@ -265,108 +317,46 @@ const AccountPage = () => {
           </Row>
         </Col>
       </Row>
-      {/* Thêm modal */}
+      {/* Xem chi tiết */}
       <Modal
-        title="Thêm tài khoản"
+        title="Xem chi tiết"
         footer={null}
         visible={isModalVisibleAdd}
         onOk={handleOk}
         onCancel={handleCancel}
         destroyOnClose={true}
       >
-        <Form {...formItemLayout} name="add" onFinish={addAccount}>
-          <Form.Item
-            label="Họ và tên"
-            name="userName"
-            rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập email!",
-              },
-              {
-                type: "email",
-                message: "Email không đúng định dạng!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Mật khẩu"
-            name="password"
-            rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Quyền"
-            name="level"
-            rules={[{ required: true, message: "Vui lòng chọn quyền!" }]}
-          >
-            <Radio.Group>
-              <Radio value="false">Client</Radio>
-              <Radio value="true">Admin</Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 14, span: 10 }}>
-            <Button type="primary" onClick={handleCancel}>
-              Hủy
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{ marginLeft: "2rem" }}
-            >
-              Xác nhận
-            </Button>
-          </Form.Item>
-        </Form>
+        <div>Mã người dùng: {order && order?.userId}</div>
+        <div>Mã giỏ hàng: {order && order?.cartId}</div>
+        <div>Tên khách hàng: {order && order?.userName}</div>
+        <div>Địa chỉ: {order && order?.address}</div>
+        <div>Số điện thoại: {order && order?.phoneNumber}</div>
+        <div>Email: {order && order?.email}</div>
+        <div>Trạng thái: {order && renderSwitch(order?.status)}</div>
+        <div>Tổng tiền: {order && order?.total}</div>
+        <Table
+          pagination={false}
+          dataSource={order.products}
+          columns={viewDetailCol}
+          rowKey={(record) => record._id}
+        />
       </Modal>
       {/* Sửa modal */}
       <Modal
-        title="Sửa tài khoản"
+        title="Xác nhận đơn"
         footer={null}
         visible={isModalVisibleEdit}
         onOk={handleOkEdit}
         onCancel={handleCancelEdit}
         destroyOnClose={true}
       >
-        <Form
-          {...formItemLayout}
-          form={formEdit}
-          name="edit"
-          onFinish={editAccount}
-        >
-          <Form.Item
-            label="Họ và tên"
-            name="userName"
-            rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Vui lòng nhập email!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Quyền"
-            name="level"
-            rules={[{ required: true, message: "Vui lòng chọn quyền!" }]}
-          >
-            <Radio.Group>
-              <Radio value="false">Client</Radio>
-              <Radio value="true">Admin</Radio>
-            </Radio.Group>
+        <Form {...formItemLayout} name="edit" onFinish={updateStatus}>
+          <Form.Item label="Trạng thái" name="status">
+            <Select defaultValue={renderSwitch(editValue)}>
+              <Option value="0">Chờ xét duyệt</Option>
+              <Option value="1">Đang giao</Option>
+              <Option value="2">Đã thanh toán</Option>
+            </Select>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 14, span: 10 }}>
             <Button type="primary" onClick={handleCancelEdit}>
@@ -384,7 +374,7 @@ const AccountPage = () => {
       </Modal>
       {/* Xóa modal */}
       <Modal
-        title="Xóa tài khoản"
+        title="Xóa đơn hàng"
         footer={null}
         visible={isModalVisibleDelete}
         onOk={handleOkDelete}
@@ -406,7 +396,7 @@ const AccountPage = () => {
             danger
             htmlType="submit"
             style={{ marginLeft: "2rem" }}
-            onClick={() => deleteAccount(accountId)}
+            onClick={() => deleteAccount(orderId)}
           >
             Xác nhận
           </Button>
@@ -416,4 +406,4 @@ const AccountPage = () => {
   );
 };
 
-export default AccountPage;
+export default OrderPage;

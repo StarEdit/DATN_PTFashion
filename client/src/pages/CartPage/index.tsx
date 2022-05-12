@@ -188,6 +188,7 @@ const CartPage = () => {
   return (
     <>
       <Header />
+      <hr />
       <div className="cart">
         <Row gutter={[16, 16]}>
           <Col span={18}>

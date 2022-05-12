@@ -26,6 +26,30 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
+const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (user && (await user.matchPassword(password))) {
+    if (user.isAdmin === true) {
+      res.json({
+        _id: user._id,
+        name: user.full_name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        token: generateAuthToken(user._id),
+        message: "Đăng nhập thành công!",
+      });
+    } else {
+      res.status(401);
+      throw new Error("Email hoặc mật khẩu không chính xác");
+    }
+  } else {
+    res.status(401);
+    throw new Error("Email hoặc mật khẩu không chính xác");
+  }
+});
+
 // @desc   Đăng xuất
 // @route  POST /api/logout
 // @access Public
@@ -236,4 +260,5 @@ export {
   getUserById,
   forgotPassword,
   updatePassword,
+  loginAdmin,
 };

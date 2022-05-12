@@ -12,6 +12,7 @@ const SearchResult = () => {
   return (
     <>
       <Header />
+      <hr />
       <div
         className="search-result-wrapper"
         style={{ padding: "2rem 2rem", minHeight: "80vh" }}

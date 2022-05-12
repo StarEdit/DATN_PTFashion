@@ -6,6 +6,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import "./style.css";
 import axios from "axios";
 import { LOGIN } from "../../api";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -14,14 +15,18 @@ const LoginPage = () => {
 
   const login = async () => {
     const { username, password } = form.getFieldsValue();
-    const res = await axios.post(LOGIN, {
-      email: username,
-      password: password,
-    });
+    try {
+      const res = await axios.post(LOGIN, {
+        email: username,
+        password: password,
+      });
 
-    if (res.data) {
-      localStorage.setItem("userInfo", JSON.stringify(res.data));
-      navigate("/admin/category");
+      if (res.data) {
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        navigate("/admin/category");
+      }
+    } catch (error) {
+      toast.error("Tài khoản hoặc mật khẩu không chính xác!");
     }
   };
 

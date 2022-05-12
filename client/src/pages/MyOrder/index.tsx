@@ -84,7 +84,7 @@ const MyOrder = () => {
     <>
       <Header />
       <hr />
-      <div style={{ height: "60vh" }}>
+      <div style={{ minHeight: "60vh" }}>
         <Row>
           <Col span={24}>
             <Table pagination={false} columns={columns} dataSource={orders} />

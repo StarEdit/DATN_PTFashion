@@ -10,12 +10,15 @@ import {
   getUserById,
   forgotPassword,
   updatePassword,
+  loginAdmin,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.route("/user").post(registerUser);
+
+router.route("/admin").post(loginAdmin);
 
 router.post("/user/login", authUser);
 
